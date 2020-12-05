@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TankModel : MonoBehaviour
+public class TankModel 
 {
-    // Start is called before the first frame update
-    void Start()
+    public TankModel(TankScriptableObject tank)
     {
-        
+        TankColor = tank.tankColor;
+        mvtSpeed = tank.MvtSpeed;
+        rotatingSpeed = tank.RotatingSpeed;
+        health = tank.Health;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public TankColor TankColor { get; }
+    public float mvtSpeed{ get; }
+    public float rotatingSpeed { get; }
+    public float health { get; }
 }
