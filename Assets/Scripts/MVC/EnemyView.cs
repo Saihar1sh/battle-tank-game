@@ -6,7 +6,6 @@ public class EnemyView : MonoBehaviour
 {
     //Values--------------------------
     public float mvtSpeed, rotatingSpeed, health;
-    private Vector3 rotation;
 
     //coloring---------------------------------
     public Renderer[] renderers;
@@ -37,35 +36,26 @@ public class EnemyView : MonoBehaviour
         rotatingSpeed = model.rotatingSpeed;
         health = model.health;
         TankColor color = model.TankColor;
-        //Debug.Log("color :" + color);
-        SetTankColor(color);
-    }
-    private void SetTankColor(TankColor _color)
-    {
-        switch (_color)
-        {
-            case TankColor.Green:
-                tankColor = Color.green;
-                break;
-            case TankColor.Black:
-                tankColor = Color.black;
-                break;
-            case TankColor.Blue:
-                tankColor = Color.blue;
-                break;
-            case TankColor.Red:
-                tankColor = Color.red;
-                break;
-            case TankColor.Cyan:
-                tankColor = Color.cyan;
-                break;
-            default:
-                Debug.LogWarning("Please choose a color from the dropdown");
-                return;
-        }
         for (int i = 0; i < renderers.Length; i++)
-            renderers[i].material.color = tankColor;
-
+            renderers[i].material.color = Color.red;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponent<Bullet>() != null)
+        {
+            DestroyEnemyTank();
+        }
+    }
+    public void TakeDamage(float amount)
+    {
+
+    }
+    public void DestroyEnemyTank()
+    {
+        TankService.Instance.CommenceExplosion(transform.position);
+        gameObject.SetActive(false);
+        Destroy(gameObject, 2f);
+    }
 }
+

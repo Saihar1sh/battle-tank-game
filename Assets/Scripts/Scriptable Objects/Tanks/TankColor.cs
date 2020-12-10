@@ -6,5 +6,5 @@
     Blue,
     Black,
     Cyan,
-    DarkGreen
+    Purple
 }

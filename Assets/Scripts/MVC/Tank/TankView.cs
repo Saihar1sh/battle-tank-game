@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class TankView : MonoBehaviour
 {
     //Values--------------------------
     public float mvtSpeed, rotatingSpeed, health;
-    private Vector3 rotation;
+    //private Vector3 rotation;
 
     private bool touchInput = true, KeyboardInput = true;
 
@@ -17,7 +18,9 @@ public class TankView : MonoBehaviour
     private Joystick mvtJoystick, shootJoystick;
     private Rigidbody tankRb;
     [SerializeField]
-    private Transform tankTurret;
+    private Transform tankTurret, tankShootPos;
+    [SerializeField]
+    private Bullet BulletPrefab;
 
     private void Awake()
     {
@@ -28,8 +31,10 @@ public class TankView : MonoBehaviour
     private void Update()
     {
         if (Mathf.Abs(shootJoystick.Direction.x) >= 0.7 || Mathf.Abs(shootJoystick.Direction.y) >= 0.7)
-            shoot();
-        //SetTankColor();
+        {
+            StartCoroutine(ShellDelay());
+            Shoot();
+        }
 
     }
     private void FixedUpdate()
@@ -78,7 +83,7 @@ public class TankView : MonoBehaviour
         Vector3 movement = new Vector3(horizontal, 0, vertical);
         //Debug.Log("horizontal: " + horizontal + " vertical:" + vertical);
         tankRb.MovePosition(tankRb.position + movement * mvtSpeed * Time.deltaTime);
-        rotation = new Vector3(horizontal, 0, vertical) * rotatingSpeed;
+        Vector3 rotation = new Vector3(horizontal, 0, vertical) * rotatingSpeed;
         tankRb.transform.rotation = Quaternion.LookRotation(rotation);
     }
     public void SetTankDetails(TankModel model)
@@ -107,9 +112,9 @@ public class TankView : MonoBehaviour
                 tankColor = Color.red;
                 break;
             case TankColor.Cyan:
-                tankColor = new Vector4(0,1,1,1);
+                tankColor = Color.cyan;
                 break;
-            case TankColor.DarkGreen:
+            case TankColor.Purple:
                 tankColor = new Vector4(0,2,0,1);
                     break;
             default:
@@ -121,8 +126,28 @@ public class TankView : MonoBehaviour
 
     }
 
-    private void shoot()
+    private void Shoot()
     {
-        Debug.Log("shoot");
+        //Debug.Log("shoot");
+        Instantiate<Bullet>(BulletPrefab, tankShootPos.position, Quaternion.identity);
+
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.GetComponent<EnemyView>() != null)
+        {
+            DestroyTank();
+        }
+    }
+    public void DestroyTank()
+    {
+        TankService.Instance.CommenceExplosion(transform.position);
+        gameObject.SetActive(false);
+        Destroy(gameObject,2f);
+    }
+
+    IEnumerator ShellDelay()
+    {
+        yield return new WaitForSeconds(1f);
     }
 }
