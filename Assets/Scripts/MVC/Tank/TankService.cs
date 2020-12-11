@@ -7,18 +7,15 @@ public class TankService : MonoSingletonGeneric<TankService>
     public TankView TankView;
     public EnemyView Enemy;
     public TankScriptableObjectList tankList;
-    public GameObject tankExplosion;
 
-    private ParticleSystem explosionParticles;
-    private AudioSource tankExplosionAudio;
     private float randomPosX, randomPosZ;
+
+    public List<TankView> tanks;
+    public List<EnemyView> enemyTanks;
+    public GameObject[] environment;
     protected override void Awake()
     {
         base.Awake();
-        explosionParticles = Instantiate(tankExplosion).GetComponent<ParticleSystem>();
-        explosionParticles.gameObject.transform.localScale *= 5;
-        tankExplosionAudio = explosionParticles.GetComponent<AudioSource>();
-        explosionParticles.gameObject.SetActive(false);
     }
     void Start()
     {
@@ -37,11 +34,17 @@ public class TankService : MonoSingletonGeneric<TankService>
         }
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            int i = Random.Range(1, tankList.tanks.Length);
-            CreateTank(tankList.tanks[i]);
-            Debug.Log("Creating Tank");
+            CreatePlayerTank();
         }
     }
+
+    public void CreatePlayerTank()
+    {
+        int i = Random.Range(1, tankList.tanks.Length);
+        CreateTank(tankList.tanks[i]);
+        Debug.Log("Creating Tank");
+    }
+
     public TankController CreateTank(TankScriptableObject tankScriptableObject)
     {
         randomPosX = Random.Range(-42, 43);
@@ -59,14 +62,56 @@ public class TankService : MonoSingletonGeneric<TankService>
         return tankController;
 
     }
-
-    public void CommenceExplosion(Vector3 _pos)
+    public void DestroyEverything()
     {
-        Debug.Log("Explosion........");
-        explosionParticles.transform.position = _pos;
-        explosionParticles.gameObject.SetActive(true);
-        explosionParticles.Play();
-        tankExplosionAudio.Play();
+        StartCoroutine(Destruction());
+    }
+    public void DestroyEnvironment()
+    {
+        environment = GameObject.FindObjectsOfType<GameObject>();
+        StartCoroutine(DestroyEnvironmentDelay(environment));
+    }
+/*    public void DestroyTanks()
+    {
+        StartCoroutine(DestroyTanksDelay());
+    }
+*/    public void DestroyEnemies()
+    {
+        StartCoroutine(DestroyEnemyDelay());
     }
 
+/*    private IEnumerator DestroyTanksDelay()
+    {
+        while(tanks.Count != 0)
+        {
+            Destroy(tanks[0].gameObject);
+            tanks.RemoveAt(0);
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+*/    private IEnumerator DestroyEnemyDelay()
+    {
+        while (enemyTanks.Count != 0)
+        {
+            Destroy(enemyTanks[0].gameObject);
+            enemyTanks.RemoveAt(0);
+            yield return new WaitForSeconds(1f);
+        }
+    }
+    private IEnumerator DestroyEnvironmentDelay(GameObject[] gameObjects)
+    {
+        for (int i = 0; i < gameObjects.Length; i++)
+        {
+            Destroy(gameObjects[i].gameObject);
+            Debug.Log(gameObjects[i]);
+            yield return new WaitForSeconds(.1f);
+        }
+    }
+    private IEnumerator Destruction()
+    {
+        yield return null;
+        StartCoroutine(DestroyEnemyDelay());
+        StartCoroutine(DestroyEnvironmentDelay(environment));
+    }
 }

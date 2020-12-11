@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 7d265158e38de9b498f3caffd4c5e189
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - tankExplosion: {instanceID: 0}
+  - shellExplosion: {fileID: 19807510, guid: 89e78efe92dfe5a42837b392cdb0bf9e, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

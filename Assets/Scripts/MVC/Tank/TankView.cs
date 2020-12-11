@@ -3,8 +3,11 @@ using System.Collections;
 
 public class TankView : MonoBehaviour
 {
+    private bool movingTurret = true;
+
     //Values--------------------------
     public float mvtSpeed, rotatingSpeed, health;
+    public float tankExplosionDelay;
     //private Vector3 rotation;
 
     private bool touchInput = true, KeyboardInput = true;
@@ -21,6 +24,7 @@ public class TankView : MonoBehaviour
     private Transform tankTurret, tankShootPos;
     [SerializeField]
     private Bullet BulletPrefab;
+    private TankController TankController;
 
     private void Awake()
     {
@@ -32,7 +36,6 @@ public class TankView : MonoBehaviour
     {
         if (Mathf.Abs(shootJoystick.Direction.x) >= 0.7 || Mathf.Abs(shootJoystick.Direction.y) >= 0.7)
         {
-            StartCoroutine(ShellDelay());
             Shoot();
         }
 
@@ -42,16 +45,29 @@ public class TankView : MonoBehaviour
         PlayerInput();
         MoveTurret();
     }
+    public void GetTankController(TankController tankController)
+    {
+        TankController = tankController;
+    }
 
     private void MoveTurret()
     {
         if (shootJoystick.Direction.x != 0 && shootJoystick.Direction.y != 0)
         {
+            movingTurret = true;
             Vector3 turretRotation = new Vector3(shootJoystick.Direction.x, 0, shootJoystick.Direction.y) * rotatingSpeed;
             tankTurret.rotation = Quaternion.LookRotation(turretRotation);
+
         }
+        else
+            movingTurret = false;
 
 
+    }
+    private void OnDrawGizmos()
+    {
+        if(movingTurret)
+        Gizmos.DrawLine(tankTurret.position, shootJoystick.Direction);
     }
 
     //records Player's Inputs and makes sure when one input device is giving input other doesn't give input.
@@ -62,7 +78,7 @@ public class TankView : MonoBehaviour
         if (keyBoardHorizontal != 0 || keyBoardVertical != 0)
         {
             touchInput = false;
-            TankMovement(keyBoardHorizontal, keyBoardVertical);
+            TankController.TankMovement(new Vector3(keyBoardHorizontal, 0, keyBoardVertical),tankRb, mvtSpeed, rotatingSpeed);
         }
         else
             touchInput = true;
@@ -71,21 +87,12 @@ public class TankView : MonoBehaviour
             KeyboardInput = false;
             float touchHorizontal = mvtJoystick.Horizontal;
             float touchVertical = mvtJoystick.Vertical;
-            TankMovement(touchHorizontal, touchVertical);
+            TankController.TankMovement(new Vector3(touchHorizontal, 0, touchVertical), tankRb, mvtSpeed, rotatingSpeed);
         }
         else
             KeyboardInput = true;
-
     }
 
-    private void TankMovement(float horizontal, float vertical)
-    {
-        Vector3 movement = new Vector3(horizontal, 0, vertical);
-        //Debug.Log("horizontal: " + horizontal + " vertical:" + vertical);
-        tankRb.MovePosition(tankRb.position + movement * mvtSpeed * Time.deltaTime);
-        Vector3 rotation = new Vector3(horizontal, 0, vertical) * rotatingSpeed;
-        tankRb.transform.rotation = Quaternion.LookRotation(rotation);
-    }
     public void SetTankDetails(TankModel model)
     {
         mvtSpeed = model.mvtSpeed;
@@ -93,43 +100,14 @@ public class TankView : MonoBehaviour
         health = model.health;
         TankColor color = model.TankColor;
         //Debug.Log("color :" + color);
-        SetTankColor(color);
-    }
-   private void SetTankColor(TankColor _color)
-    {
-        switch (_color)
-        {
-            case TankColor.Green:
-                tankColor = Color.green;
-                break;
-            case TankColor.Black:
-                tankColor = Color.black;
-                break;
-            case TankColor.Blue:
-                tankColor = Color.blue;
-                break;
-            case TankColor.Red:
-                tankColor = Color.red;
-                break;
-            case TankColor.Cyan:
-                tankColor = Color.cyan;
-                break;
-            case TankColor.Purple:
-                tankColor = new Vector4(0,2,0,1);
-                    break;
-            default:
-                Debug.LogWarning("Please choose a color from the dropdown");
-                return;
-        }
-        for (int i = 0; i < renderers.Length; i++)
-            renderers[i].material.color = tankColor;
-
+        TankController.SetTankColor(color, renderers);
     }
 
     private void Shoot()
     {
         //Debug.Log("shoot");
-        Instantiate<Bullet>(BulletPrefab, tankShootPos.position, Quaternion.identity);
+        Instantiate(BulletPrefab, tankShootPos.position, Quaternion.identity);
+
 
     }
     private void OnCollisionEnter(Collision collision)
@@ -139,15 +117,21 @@ public class TankView : MonoBehaviour
             DestroyTank();
         }
     }
+    private void OnDestroy()
+    {
+        TankService.Instance.DestroyEverything();
+    }
     public void DestroyTank()
     {
-        TankService.Instance.CommenceExplosion(transform.position);
-        gameObject.SetActive(false);
-        Destroy(gameObject,2f);
+        Particles.Instance.CommenceTankExplosion(transform);
+        enabled = false;
+        StartCoroutine(TankExplosionDelay());
     }
-
-    IEnumerator ShellDelay()
+    
+    IEnumerator TankExplosionDelay()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(tankExplosionDelay);
+        TankService.Instance.tanks.Remove(this);
+        Destroy(gameObject);
     }
 }

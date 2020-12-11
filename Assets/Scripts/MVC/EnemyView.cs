@@ -53,9 +53,13 @@ public class EnemyView : MonoBehaviour
     }
     public void DestroyEnemyTank()
     {
-        TankService.Instance.CommenceExplosion(transform.position);
+        Particles.Instance.CommenceTankExplosion(transform);
         gameObject.SetActive(false);
         Destroy(gameObject, 2f);
+    }
+    private void OnDestroy()
+    {
+        TankService.Instance.enemyTanks.Remove(this);
     }
 }
 
