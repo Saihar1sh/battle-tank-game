@@ -106,7 +106,7 @@ public class TankView : MonoBehaviour
     private void Shoot()
     {
         //Debug.Log("shoot");
-        Instantiate(BulletPrefab, tankShootPos.position, Quaternion.identity);
+        Instantiate(BulletPrefab, tankShootPos.position, tankTurret.rotation, tankShootPos);
 
 
     }
@@ -119,7 +119,7 @@ public class TankView : MonoBehaviour
     }
     private void OnDestroy()
     {
-        TankService.Instance.DestroyEverything();
+        TankService.Instance.DestroyEnemies();
     }
     public void DestroyTank()
     {

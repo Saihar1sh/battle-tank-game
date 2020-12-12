@@ -13,6 +13,8 @@ public class TankService : MonoSingletonGeneric<TankService>
     public List<TankView> tanks;
     public List<EnemyView> enemyTanks;
     public GameObject[] environment;
+
+    private bool enemiesDestroyed = false;
     protected override void Awake()
     {
         base.Awake();
@@ -24,6 +26,8 @@ public class TankService : MonoSingletonGeneric<TankService>
         {
             CreateEnemyTank(tankList.tanks[0]);
         }
+        environment = GameObject.FindGameObjectsWithTag("Environment");
+
     }
     private void Update()
     {
@@ -62,25 +66,20 @@ public class TankService : MonoSingletonGeneric<TankService>
         return tankController;
 
     }
-    public void DestroyEverything()
+/*    public void DestroyEverything()
     {
         StartCoroutine(Destruction());
     }
     public void DestroyEnvironment()
     {
-        environment = GameObject.FindObjectsOfType<GameObject>();
-        StartCoroutine(DestroyEnvironmentDelay(environment));
+        StartCoroutine(DestroyEnvironmentDelay());
     }
-/*    public void DestroyTanks()
+    public void DestroyTanks()
     {
         StartCoroutine(DestroyTanksDelay());
     }
-*/    public void DestroyEnemies()
-    {
-        StartCoroutine(DestroyEnemyDelay());
-    }
 
-/*    private IEnumerator DestroyTanksDelay()
+    private IEnumerator DestroyTanksDelay()
     {
         while(tanks.Count != 0)
         {
@@ -88,30 +87,30 @@ public class TankService : MonoSingletonGeneric<TankService>
             tanks.RemoveAt(0);
             yield return new WaitForSeconds(1f);
         }
+*/
+    public void DestroyEnemies()
+    {
+        StartCoroutine(DestroyEnemyDelay());
     }
 
-*/    private IEnumerator DestroyEnemyDelay()
+    private IEnumerator DestroyEnemyDelay()
     {
         while (enemyTanks.Count != 0)
         {
             Destroy(enemyTanks[0].gameObject);
             enemyTanks.RemoveAt(0);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.5f);
         }
+        StartCoroutine(DestroyEnvironmentDelay());
+
     }
-    private IEnumerator DestroyEnvironmentDelay(GameObject[] gameObjects)
+    private IEnumerator DestroyEnvironmentDelay()
     {
-        for (int i = 0; i < gameObjects.Length; i++)
+        for (int i = 0; i < environment.Length; i++)
         {
-            Destroy(gameObjects[i].gameObject);
-            Debug.Log(gameObjects[i]);
+            Destroy(environment[i].gameObject);
+            Debug.Log(environment[i]);
             yield return new WaitForSeconds(.1f);
         }
-    }
-    private IEnumerator Destruction()
-    {
-        yield return null;
-        StartCoroutine(DestroyEnemyDelay());
-        StartCoroutine(DestroyEnvironmentDelay(environment));
     }
 }

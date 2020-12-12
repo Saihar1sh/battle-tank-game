@@ -14,7 +14,7 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 move = transform.position + new Vector3(1,0,1).normalized * bulletSpeed * Time.fixedDeltaTime;
+        Vector3 move = transform.position + transform.forward * bulletSpeed * Time.fixedDeltaTime;
         bulletRB.velocity = move;
         Destroy(gameObject, maxLifetime);
     }
@@ -24,6 +24,18 @@ public class Bullet : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.GetComponent<EnemyView>() != null)
+        {
+            Particles.Instance.CommenceTankExplosion(other.transform);
+            EnemyView enemy = other.gameObject.GetComponent<EnemyView>();
+            enemy.DestroyEnemyTank();
+            /*                float health = enemy.health;
+
+                            float damage = CalculateDamage(targetRB.position);
+                            enemy.TakeDamage(damage);
+            */
+
+        }
 
         /* Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, tankMask);
          for (int i = 0; i < colliders.Length; i++)
@@ -37,18 +49,6 @@ public class Bullet : MonoBehaviour
              targetRB.AddExplosionForce(explosionForce, transform.position, explosionRadius);
 
          }*/
-        if (other.gameObject.GetComponent<EnemyView>() != null)
-        {
-            Particles.Instance.CommenceTankExplosion(other.transform);
-            EnemyView enemy = other.gameObject.GetComponent<EnemyView>();
-            enemy.DestroyEnemyTank();
-            /*                float health = enemy.health;
-
-                            float damage = CalculateDamage(targetRB.position);
-                            enemy.TakeDamage(damage);
-            */
-
-        }
         Particles.Instance.CommenceShellExplosion(transform);
     }
     private float CalculateDamage(Vector3 targetPos)
