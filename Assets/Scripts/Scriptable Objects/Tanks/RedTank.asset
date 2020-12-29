@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d975abd51405c94d9a318356a1308ec, type: 3}
   m_Name: RedTank
   m_EditorClassIdentifier: 
-  tankColor: 2
+  tankColor: {r: 0.8396226, g: 0.043975074, b: 0, a: 0}
   TankName: Red Tank
   MvtSpeed: 5
   RotatingSpeed: 5
   Health: 100
+  BulletReloadTime: 1.5

@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class TankView : MonoBehaviour
+public class TankView : MonoBehaviour, IDamagable
 {
-    private bool movingTurret = true;
 
     //Values--------------------------
-    public float mvtSpeed, rotatingSpeed, health;
-    public float tankExplosionDelay;
+    public float mvtSpeed, rotatingSpeed, maxHealth;
+    public float tankExplosionDelay = 1f, shootDelay = 1f;
     //private Vector3 rotation;
-
+    private float currentHealth;
     private bool touchInput = true, KeyboardInput = true;
+    private bool canShoot = true;
 
     //coloring---------------------------------
     public Renderer[] renderers;
@@ -23,8 +24,10 @@ public class TankView : MonoBehaviour
     [SerializeField]
     private Transform tankTurret, tankShootPos;
     [SerializeField]
-    private Bullet BulletPrefab;
-    private TankController TankController;
+    private BulletController BulletPrefab;
+    private TankController tankController;
+
+    private event Action<float> OnHealthChanged = delegate { };
 
     private void Awake()
     {
@@ -34,42 +37,34 @@ public class TankView : MonoBehaviour
     }
     private void Update()
     {
-        if (Mathf.Abs(shootJoystick.Direction.x) >= 0.7 || Mathf.Abs(shootJoystick.Direction.y) >= 0.7)
+        if (canShoot)
         {
-            Shoot();
+            if (Mathf.Abs(shootJoystick.Direction.x) >= 0.7 || Mathf.Abs(shootJoystick.Direction.y) >= 0.7)
+            {
+                StartCoroutine(ShootBulletDelay(shootDelay));
+            }
         }
-
     }
     private void FixedUpdate()
     {
         PlayerInput();
         MoveTurret();
     }
-    public void GetTankController(TankController tankController)
+    public void GetTankController(TankController _tankController)
     {
-        TankController = tankController;
+       this.tankController = _tankController;
     }
 
     private void MoveTurret()
     {
         if (shootJoystick.Direction.x != 0 && shootJoystick.Direction.y != 0)
         {
-            movingTurret = true;
             Vector3 turretRotation = new Vector3(shootJoystick.Direction.x, 0, shootJoystick.Direction.y) * rotatingSpeed;
             tankTurret.rotation = Quaternion.LookRotation(turretRotation);
 
         }
-        else
-            movingTurret = false;
-
 
     }
-    private void OnDrawGizmos()
-    {
-        if(movingTurret)
-        Gizmos.DrawLine(tankTurret.position, shootJoystick.Direction);
-    }
-
     //records Player's Inputs and makes sure when one input device is giving input other doesn't give input.
     public void PlayerInput()
     {
@@ -78,7 +73,8 @@ public class TankView : MonoBehaviour
         if (keyBoardHorizontal != 0 || keyBoardVertical != 0)
         {
             touchInput = false;
-            TankController.TankMovement(new Vector3(keyBoardHorizontal, 0, keyBoardVertical),tankRb, mvtSpeed, rotatingSpeed);
+            Vector3 movementInput = new Vector3(keyBoardHorizontal, 0, keyBoardVertical);
+            tankController.TankMovement(movementInput, tankRb, mvtSpeed, rotatingSpeed);
         }
         else
             touchInput = true;
@@ -87,47 +83,47 @@ public class TankView : MonoBehaviour
             KeyboardInput = false;
             float touchHorizontal = mvtJoystick.Horizontal;
             float touchVertical = mvtJoystick.Vertical;
-            TankController.TankMovement(new Vector3(touchHorizontal, 0, touchVertical), tankRb, mvtSpeed, rotatingSpeed);
+            Vector3 movementInput = new Vector3(touchHorizontal, 0, touchVertical);
+            tankController.TankMovement(movementInput, tankRb, mvtSpeed, rotatingSpeed);
         }
         else
             KeyboardInput = true;
     }
-
     public void SetTankDetails(TankModel model)
     {
         mvtSpeed = model.mvtSpeed;
         rotatingSpeed = model.rotatingSpeed;
-        health = model.health;
-        TankColor color = model.TankColor;
+        maxHealth = model.health;
+        Color color = model.TankColor;
         //Debug.Log("color :" + color);
-        TankController.SetTankColor(color, renderers);
+        tankController.SetTankColor(color, renderers);
+        shootDelay = model.reloadTime;
     }
 
     private void Shoot()
     {
         //Debug.Log("shoot");
-        Instantiate(BulletPrefab, tankShootPos.position, tankTurret.rotation, tankShootPos);
-
-
+        Instantiate(BulletPrefab, tankShootPos.position, tankTurret.rotation);
     }
-    private void OnCollisionEnter(Collision collision)
+
+    public void ModifyHealth(float amount)
     {
-        if(collision.gameObject.GetComponent<EnemyView>() != null)
-        {
-            DestroyTank();
-        }
-    }
-    private void OnDestroy()
-    {
-        TankService.Instance.DestroyEnemies();
+        
     }
     public void DestroyTank()
     {
         Particles.Instance.CommenceTankExplosion(transform);
-        enabled = false;
+        this.enabled = false;
         StartCoroutine(TankExplosionDelay());
     }
-    
+    IEnumerator ShootBulletDelay(float secs)
+    {
+        canShoot = false;
+        Shoot();
+        yield return new WaitForSeconds(secs);
+        canShoot = true;
+    }
+
     IEnumerator TankExplosionDelay()
     {
         yield return new WaitForSeconds(tankExplosionDelay);

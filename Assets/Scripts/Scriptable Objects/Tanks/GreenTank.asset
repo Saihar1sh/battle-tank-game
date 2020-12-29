@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d975abd51405c94d9a318356a1308ec, type: 3}
   m_Name: GreenTank
   m_EditorClassIdentifier: 
-  tankColor: 1
+  tankColor: {r: 0, g: 0.4811321, b: 0, a: 0}
   TankName: Green tank
   MvtSpeed: 10
   RotatingSpeed: 5
   Health: 100
+  BulletReloadTime: 1

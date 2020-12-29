@@ -1,29 +1,40 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class EnemyView : MonoBehaviour
 {
     //Values--------------------------
-    public float mvtSpeed, rotatingSpeed, health;
+    public float mvtSpeed, rotatingSpeed, maxHealth;
 
+    private float currentHealth;
     //coloring---------------------------------
     public Renderer[] renderers;
 
     private Color tankColor;
 
+    private HealthBar HealthBar;
 
-
+    private void Awake()
+    {
+        HealthBar = GetComponentInChildren<HealthBar>();
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentHealth = maxHealth;
+        HealthBar.SetMaxHealth(maxHealth);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        CheckHealth();
+    }
+
+    private void CheckHealth()
+    {
+        if (currentHealth <= 0)
+            DestroyEnemyTank();
     }
 
     private void EnemyMovement()
@@ -34,22 +45,16 @@ public class EnemyView : MonoBehaviour
     {
         mvtSpeed = model.mvtSpeed;
         rotatingSpeed = model.rotatingSpeed;
-        health = model.health;
-        TankColor color = model.TankColor;
+        maxHealth = model.health;
+        //Color color = model.TankColor;
         for (int i = 0; i < renderers.Length; i++)
             renderers[i].material.color = Color.red;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.GetComponent<Bullet>() != null)
-        {
-            DestroyEnemyTank();
-        }
-    }
     public void TakeDamage(float amount)
     {
-
+        currentHealth -= amount;
+        HealthBar.SetHealth(currentHealth);
     }
     public void DestroyEnemyTank()
     {

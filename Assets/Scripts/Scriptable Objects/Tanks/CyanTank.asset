@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d975abd51405c94d9a318356a1308ec, type: 3}
   m_Name: CyanTank
   m_EditorClassIdentifier: 
-  tankColor: 5
+  tankColor: {r: 0, g: 1, b: 1, a: 0}
   TankName: Light Blue Tank
   MvtSpeed: 18
   RotatingSpeed: 10
   Health: 100
+  BulletReloadTime: 0.5

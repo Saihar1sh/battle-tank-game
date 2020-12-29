@@ -14,9 +14,7 @@ public class TankController
         EnemyView  = GameObject.Instantiate<EnemyView>(enemyPrefab, _pos, _rotation);
         EnemyView.SetEnemyDetails(tankModel);
         TankService.Instance.enemyTanks.Add(EnemyView);
-
     }
-
 
     public void TankMovement(Vector3 movementInput, Rigidbody tankRb, float mvtSpeed, float rotatingSpeed)
     {
@@ -26,38 +24,17 @@ public class TankController
         tankRb.transform.rotation = Quaternion.LookRotation(rotation);
     }
 
-    public void SetTankColor(TankColor _color, Renderer[] renderers)
+    public void SetTankColor(Color _color, Renderer[] renderers)
     {
-        Color tankColor;
-        switch (_color)
-        {
-            case TankColor.Green:
-                tankColor = Color.green;
-                break;
-            case TankColor.Black:
-                tankColor = Color.black;
-                break;
-            case TankColor.Blue:
-                tankColor = Color.blue;
-                break;
-            case TankColor.Red:
-                tankColor = Color.red;
-                break;
-            case TankColor.Cyan:
-                tankColor = Color.cyan;
-                break;
-            case TankColor.Purple:
-                tankColor = new Vector4(0, 2, 0, 1);
-                break;
-            default:
-                Debug.LogWarning("Please choose a color from the dropdown");
-                return;
-        }
         for (int i = 0; i < renderers.Length; i++)
-            renderers[i].material.color = tankColor;
+            renderers[i].material.color = _color;
 
     }
 
+    public void ApplyHealth(float amount)
+    {
+
+    }
 
     public TankView TankView { get; }
     public EnemyView EnemyView { get; }

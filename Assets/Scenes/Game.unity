@@ -2188,6 +2188,115 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   profile: {fileID: 11400000, guid: d2b82a52b13b9014d988055d0b2f939e, type: 2}
+--- !u!1001 &1484637169
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 273279129318604963, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273279129318604963, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.018
+      objectReference: {fileID: 0}
+    - target: {fileID: 273279129318604963, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273279129318604963, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273279129318604963, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273279129318604963, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273279129318604963, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 273279129318604963, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 273279129318604963, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273279129318604963, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273279129318604963, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273279129319103811, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_Name
+      value: Tank
+      objectReference: {fileID: 0}
+    - target: {fileID: 1872980547349904724, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1872980547349904724, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899641759648525279, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: m_FillOrigin
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531050735891836852, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: gradient.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531050735891836852, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: gradient.ctime0
+      value: 19661
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531050735891836852, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: gradient.key0.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531050735891836852, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: gradient.key1.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531050735891836852, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42,
+        type: 3}
+      propertyPath: gradient.ctime1
+      value: 39321
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 72458ec52fd2c9e4991cf5e2ab1bfc42, type: 3}
 --- !u!1001 &1673295542
 PrefabInstance:
   m_ObjectHideFlags: 0

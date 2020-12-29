@@ -17,3 +17,4 @@ MonoBehaviour:
   MvtSpeed: 2
   RotatingSpeed: 2
   Health: 100
+  BulletReloadTime: 2
