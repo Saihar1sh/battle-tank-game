@@ -100,7 +100,7 @@ MonoBehaviour:
   explosionRadius: 5
   maxLifetime: 2
   bulletSpeed: 1000
-  damage: 10
+  damage: 100
 --- !u!54 &1690475159
 Rigidbody:
   m_ObjectHideFlags: 0

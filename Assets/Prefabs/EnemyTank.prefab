@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6405370539194542844}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 1095417814880588926}
   - component: {fileID: 1531467426705210711}
   - component: {fileID: 7008436486774305028}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: HealthCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2839544357555421879}
   - component: {fileID: 4864785223773586900}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 8828781430235914991}
   - component: {fileID: 1395596854749507527}
   - component: {fileID: 3692354034994232700}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +298,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00000023841858, y: -0.0000010430812}
+  m_AnchoredPosition: {x: 0, y: -0.0000009536743}
   m_SizeDelta: {x: 0, y: 0.0000014901159}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1395596854749507527
@@ -347,7 +347,7 @@ GameObject:
   - component: {fileID: 1881446511966931901}
   - component: {fileID: 3231548850469657764}
   - component: {fileID: 2385249162355007172}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -394,7 +394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.18392253, a: 0.5882353}
+  m_Color: {r: 0, g: 1, b: 0, a: 0.5882353}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -408,6 +408,36 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 1
   m_UseSpriteMesh: 0
+--- !u!1 &6319299063820581102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4699192327940527832}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4699192327940527832
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6319299063820581102}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.065, y: 0.504, z: 1.599}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7225838014044237753}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 350, y: 0, z: 0}
 --- !u!1 &7225838013103950663
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,6 +450,7 @@ GameObject:
   - component: {fileID: 7225838013103950666}
   - component: {fileID: 7225838013103950665}
   - component: {fileID: 2951190491932392069}
+  - component: {fileID: 5402011116090387602}
   m_Layer: 8
   m_Name: EnemyTank
   m_TagString: Enemy
@@ -434,7 +465,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7225838013103950663}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.018, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -492,6 +523,22 @@ MonoBehaviour:
   - {fileID: 7225838014680581274}
   - {fileID: 7225838014849183548}
   - {fileID: 7225838014044237751}
+--- !u!114 &5402011116090387602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225838013103950663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b0bf72ddc04e7649af4c20eab2366a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 768
+  tankShoot: {fileID: 4699192327940527832}
 --- !u!1 &7225838013483050512
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,7 +550,7 @@ GameObject:
   - component: {fileID: 7225838013483050513}
   - component: {fileID: 7225838013483050514}
   - component: {fileID: 7225838013483050515}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TankChassis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -582,7 +629,7 @@ GameObject:
   - component: {fileID: 7225838014044237753}
   - component: {fileID: 7225838014044237752}
   - component: {fileID: 7225838014044237751}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TankTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -599,7 +646,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.000010554959, y: 1.0796412, z: -0.025321364}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4699192327940527832}
   m_Father: {fileID: 7225838014188445281}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -658,7 +706,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7225838014188445281}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TankRenderers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -694,7 +742,7 @@ GameObject:
   - component: {fileID: 7225838014680581272}
   - component: {fileID: 7225838014680581273}
   - component: {fileID: 7225838014680581274}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TankTracksLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -773,7 +821,7 @@ GameObject:
   - component: {fileID: 7225838014849183546}
   - component: {fileID: 7225838014849183547}
   - component: {fileID: 7225838014849183548}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TankTracksRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -852,6 +900,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DustTrail
       objectReference: {fileID: 0}
+    - target: {fileID: 148586, guid: f7167ad2844254441b40b8a300b4f1fe, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 496482, guid: f7167ad2844254441b40b8a300b4f1fe, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.66
@@ -922,6 +974,10 @@ PrefabInstance:
     - target: {fileID: 148586, guid: f7167ad2844254441b40b8a300b4f1fe, type: 3}
       propertyPath: m_Name
       value: DustTrail
+      objectReference: {fileID: 0}
+    - target: {fileID: 148586, guid: f7167ad2844254441b40b8a300b4f1fe, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 496482, guid: f7167ad2844254441b40b8a300b4f1fe, type: 3}
       propertyPath: m_LocalPosition.x
