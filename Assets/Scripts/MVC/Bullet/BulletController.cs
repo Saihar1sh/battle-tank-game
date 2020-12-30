@@ -25,25 +25,26 @@ public class BulletController : MonoBehaviour
     {
         
     }
-    /* To affect surroundings of bullet
-     private void OnTriggerEnter(Collider other)
-        {
-           
-            Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, tankMask);
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                Rigidbody targetRB = colliders[i].GetComponent<Rigidbody>();
-                if (!targetRB)
-                {
-                    Debug.LogWarning("No Rigidbody attached to : " + colliders[i].name);
-                    continue;
-                }
-                targetRB.AddExplosionForce(explosionForce, transform.position, explosionRadius);
 
+    //To affect surroundings of bullet
+    private void OnTriggerEnter(Collider other)
+    {
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, tankMask);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            Rigidbody targetRB = colliders[i].GetComponent<Rigidbody>();
+            if (!targetRB)
+            {
+                Debug.LogWarning("No Rigidbody attached to : " + colliders[i].name);
+                continue;
             }
-            Particles.Instance.CommenceShellExplosion(transform);
+            targetRB.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+
         }
-    */
+        Particles.Instance.CommenceShellExplosion(transform);
+    }
+
 
     private void OnCollisionEnter(Collision collision)
     {

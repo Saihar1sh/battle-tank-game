@@ -23,8 +23,6 @@ public class TankView : MonoBehaviour, IDamagable
     private Rigidbody tankRb;
     [SerializeField]
     private Transform tankTurret, tankShootPos;
-    [SerializeField]
-    private BulletController BulletPrefab;
     private TankController tankController;
 
     private event Action<float> OnHealthChanged = delegate { };
@@ -103,7 +101,7 @@ public class TankView : MonoBehaviour, IDamagable
     private void Shoot()
     {
         //Debug.Log("shoot");
-        Instantiate(BulletPrefab, tankShootPos.position, tankTurret.rotation);
+        BulletService.Instance.InstantiateBullet(tankShootPos);
     }
 
     public void ModifyHealth(float amount)
