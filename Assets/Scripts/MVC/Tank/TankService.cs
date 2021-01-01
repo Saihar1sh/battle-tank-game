@@ -6,9 +6,10 @@ public class TankService : MonoSingletonGeneric<TankService>
 {
     public TankView TankView;
     public EnemyView Enemy;
+    public GameObject BustedTankPrefab;
     public TankScriptableObjectList tankList;
 
-    private float randomPosX, randomPosZ;
+    private Vector3 randomSpawnPos;
 
     public List<TankView> tanks;
     public List<EnemyView> enemyTanks;
@@ -21,12 +22,22 @@ public class TankService : MonoSingletonGeneric<TankService>
     }
     void Start()
     {
-         CreateTank(tankList.tanks[1]);
+        int rand = Random.Range(1 , tankList.tanks.Length);
+
+        //tanks[0].SetTankDetails(new TankModel(tankList.tanks[rand]));
+
+        for (int i = 0; i < enemyTanks.Count; i++)
+        {
+            //TankModel redTank = new TankModel(tankList.tanks[0]);
+        }
+
+/*         CreateTank(tankList.tanks[rand]);
         for (int i = 0; i < 5; i++)
         {
             CreateEnemyTank(tankList.tanks[0]);
         }
-        environment = GameObject.FindGameObjectsWithTag("Environment");
+*/        environment = GameObject.FindGameObjectsWithTag("Environment");
+
 
     }
     private void Update()
@@ -51,21 +62,32 @@ public class TankService : MonoSingletonGeneric<TankService>
 
     public TankController CreateTank(TankScriptableObject tankScriptableObject)
     {
-        randomPosX = Random.Range(-42, 43);
-        randomPosZ = Random.Range(39, -43);
+        randomSpawnPos = new Vector3(Random.Range(-42, 43), 0, Random.Range(39, -43));
         TankModel tankModel = new TankModel(tankScriptableObject);
-        TankController tankController = new TankController(TankView, tankModel, new Vector3(randomPosX, 0, randomPosZ), Quaternion.identity);
+        TankController tankController = new TankController(TankView, tankModel, randomSpawnPos, Quaternion.identity);
         return tankController;
     }
     public TankController CreateEnemyTank(TankScriptableObject tankScriptableObject)
     {
-        randomPosX = Random.Range(-42, 43);
-        randomPosZ = Random.Range(39, -43);
+        randomSpawnPos = new Vector3(Random.Range(-42, 43), 0, Random.Range(39, -43));
         TankModel tankModel = new TankModel(tankScriptableObject);
-        TankController tankController = new TankController(Enemy, tankModel, new Vector3(randomPosX, 0, randomPosZ), Quaternion.identity);
+        TankController tankController = new TankController(Enemy, tankModel,randomSpawnPos, Quaternion.identity);
         return tankController;
 
     }
+    public void AddTankDetails(TankView tankView)
+    {
+        //enemyTanks[i].SetEnemyDetails(redTank);
+
+    }
+
+    public void SpawnBustedTank(Transform tankPos)
+    {
+        Vector3 pos = new Vector3(tankPos.position.x, 0, tankPos.position.z);
+        GameObject bustedTank = Instantiate(BustedTankPrefab, pos, tankPos.rotation);
+        Destroy(bustedTank, 2f);
+    }
+
 /*    public void DestroyEverything()
     {
         StartCoroutine(Destruction());

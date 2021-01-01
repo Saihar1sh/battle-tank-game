@@ -14,7 +14,7 @@ public class Minimap : MonoBehaviour
         if (player == null)
         {
             player = FindObjectOfType<TankView>().transform;
-
+            return;
         }
         else
         {

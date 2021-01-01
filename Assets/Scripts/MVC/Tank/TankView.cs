@@ -6,8 +6,9 @@ public class TankView : MonoBehaviour, IDamagable
 {
 
     //Values--------------------------
-    public float mvtSpeed, rotatingSpeed, maxHealth;
-    public float tankExplosionDelay = 1f, shootDelay = 1f;
+    public float mvtSpeed, rotatingSpeed, maxHealth, tankExplosionDelay = 1f;
+    [Tooltip("Reloading Time")]
+    public float shootDelay = 1f;
     //private Vector3 rotation;
     private float currentHealth;
     private bool touchInput = true, KeyboardInput = true;
@@ -32,6 +33,12 @@ public class TankView : MonoBehaviour, IDamagable
         tankRb = GetComponent<Rigidbody>();
         mvtJoystick = FindObjectOfType<FixedJoystick>();
         shootJoystick = FindObjectOfType<FloatingJoystick>();
+    }
+    private void Start()
+    {
+        tankController = new TankController(this);
+        TankService.Instance.tanks.Add(this);
+
     }
     private void Update()
     {
@@ -106,13 +113,13 @@ public class TankView : MonoBehaviour, IDamagable
 
     public void ModifyHealth(float amount)
     {
-        
     }
     public void DestroyTank()
     {
         Particles.Instance.CommenceTankExplosion(transform);
-        this.enabled = false;
+        TankService.Instance.SpawnBustedTank(transform);
         StartCoroutine(TankExplosionDelay());
+        this.enabled = false;
     }
     IEnumerator ShootBulletDelay(float secs)
     {
@@ -127,5 +134,9 @@ public class TankView : MonoBehaviour, IDamagable
         yield return new WaitForSeconds(tankExplosionDelay);
         TankService.Instance.tanks.Remove(this);
         Destroy(gameObject);
+    }
+    private void OnDestroy()
+    {
+
     }
 }
