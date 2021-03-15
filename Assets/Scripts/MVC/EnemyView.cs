@@ -3,13 +3,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyView : MonoBehaviour
+public class EnemyView : MonoBehaviour,IDamagable
 {
     //Values--------------------------
     public float mvtSpeed, rotatingSpeed, maxHealth;
 
     private float currentHealth;
-    private bool canShoot;
+    private bool canShoot = true;
     //coloring---------------------------------
     public Renderer[] renderers;
 
@@ -78,12 +78,11 @@ public class EnemyView : MonoBehaviour
         mvtSpeed = model.mvtSpeed;
         rotatingSpeed = model.rotatingSpeed;
         maxHealth = model.health;
-        //Color color = model.TankColor;
         for (int i = 0; i < renderers.Length; i++)
             renderers[i].material.color = Color.red;
     }
 
-    public void TakeDamage(float amount)
+    public void ModifyHealth(float amount)
     {
         currentHealth -= amount;
         HealthBar.SetHealth(currentHealth);

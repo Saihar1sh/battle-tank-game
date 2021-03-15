@@ -14,7 +14,7 @@ public class StatesController : MonoBehaviour
     private AttackState attackState;
 
     //private TankState _currentState;
-    private EnemyStateMachine currentState;
+    private EnemyStateMachine currentState, prevState;
     private bool playerInChaseRange = false, playerInAttackRange = false;
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class StatesController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentState = wanderState;
+        //currentState = wanderState;
     }
 
     // Update is called once per frame
@@ -40,8 +40,6 @@ public class StatesController : MonoBehaviour
 
 
 
-        //changing States
-        ChangeStateTo(currentState);
 
         if (playerInChaseRange)
             currentState = chaseState;
@@ -54,15 +52,46 @@ public class StatesController : MonoBehaviour
             currentState = wanderState;
 
 
+        //changing States
+        ChangeStateTo(currentState);
     }
 
     private void ChangeStateTo(EnemyStateMachine state)
     {
-        currentState.OnExitState();
-        currentState = state;
-        currentState.OnEnterState();
+        if (currentState != null)
+        {
+            prevState = currentState;
+            currentState.OnExitState();
+            currentState = state;
+            currentState.OnEnterState();
+        }
+        else if (currentState == null)
+        {
+            currentState = state;
+            currentState.OnEnterState();
+
+        }
+        else
+            Debug.Log("andgdkhnf");
+
+        /*        if(currentState == null)
+                {
+                    currentState = state;
+                    currentState.OnEnterState();
+                }
+                else
+                {
+                    if(currentState != state)
+                    {
+                        currentState.OnExitState();
+                        currentState = state;
+                        currentState.OnEnterState();
+                    }
+                }
+            }
+        */
     }
-    private void OnDrawGizmos()
+        private void OnDrawGizmos()
     {
         Gizmos.color = Color.black;
         Gizmos.DrawWireSphere(transform.position, chaseRange);

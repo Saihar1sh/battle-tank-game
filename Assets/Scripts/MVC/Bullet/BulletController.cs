@@ -53,20 +53,20 @@ public class BulletController : MonoBehaviour
             {
                 Particles.Instance.CommenceTankExplosion(collision.transform);
                 EnemyView enemy = collision.gameObject.GetComponent<EnemyView>();
-                enemy.TakeDamage(damage);
+                enemy.ModifyHealth(-damage);
             }
             if (collision.gameObject.tag.Equals("Player"))
             {
                 Particles.Instance.CommenceTankExplosion(collision.transform);
                 TankView player = collision.gameObject.GetComponent<TankView>();
-                player.ModifyHealth(damage);
+                player.ModifyHealth(-damage);
             }
             if(collision.gameObject.tag.Equals("Environment"))
             {
                 Destroy(gameObject);
             }
     }
-    private float CalculateDamage(Vector3 targetPos)
+/*    private float CalculateDamage(Vector3 targetPos)
     {
         Vector3 explosionToTarget = targetPos - transform.position;
         float explosionDist = explosionToTarget.magnitude;
@@ -75,4 +75,5 @@ public class BulletController : MonoBehaviour
         damage = Mathf.Max(0f, damage);
         return damage;
     }
+*/
 }

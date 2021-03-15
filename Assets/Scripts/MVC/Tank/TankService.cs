@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TankService : MonoSingletonGeneric<TankService>
 {
@@ -16,9 +17,13 @@ public class TankService : MonoSingletonGeneric<TankService>
     public GameObject[] environment;
 
     private bool enemiesDestroyed = false;
+
+    public Button playerBtn, enemyBtn;
+
     protected override void Awake()
     {
         base.Awake();
+        
     }
     void Start()
     {
@@ -38,7 +43,8 @@ public class TankService : MonoSingletonGeneric<TankService>
         }
 */        environment = GameObject.FindGameObjectsWithTag("Environment");
 
-
+        playerBtn.onClick.AddListener(CreatePlayerTank);
+        enemyBtn.onClick.AddListener(delegate { CreateEnemyTank(tankList.tanks[0]); });
     }
     private void Update()
     {

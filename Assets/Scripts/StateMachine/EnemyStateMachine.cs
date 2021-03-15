@@ -30,10 +30,6 @@ public class EnemyStateMachine : MonoBehaviour
         player = statesController.whatIsPlayer;
 
     }
-    private void Update()
-    {
-        
-    }
     public virtual void OnEnterState()
     {
         this.enabled = true;

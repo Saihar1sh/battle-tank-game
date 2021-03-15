@@ -11,8 +11,12 @@ public class AttackState : EnemyStateMachine
         Debug.Log(gameObject.name + " : Entered Attack State");
         players = Physics.OverlapSphere(transform.position, attackingRange, player);
         if (players[0] != null)
+        {
             enemy.MoveTurret(players[0].transform);
-        enemy.ShootDelay(1f);
+            enemy.ShootDelay(1f);
+        }
+        else
+            Debug.Log("player not detected");
 
     }
     public override void OnExitState()
