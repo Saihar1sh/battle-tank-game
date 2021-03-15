@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mvtSpeed: 10
   rotatingSpeed: 5
-  maxHealth: 100
+  maxHealth: 0
   tankExplosionDelay: 1
   shootDelay: 1
   renderers:
@@ -685,7 +685,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1872980547349904724}
   m_HandleRect: {fileID: 0}

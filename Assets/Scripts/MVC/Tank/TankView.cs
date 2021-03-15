@@ -25,7 +25,7 @@ public class TankView : MonoBehaviour, IDamagable
     [SerializeField]
     private Transform tankTurret, tankShootPos;
     private TankController tankController;
-    private HealthBar healthBar;
+
     private event Action<float> OnHealthChanged = delegate { };
 
     private void Awake()
@@ -33,13 +33,12 @@ public class TankView : MonoBehaviour, IDamagable
         tankRb = GetComponent<Rigidbody>();
         mvtJoystick = FindObjectOfType<FixedJoystick>();
         shootJoystick = FindObjectOfType<FloatingJoystick>();
-        healthBar = GetComponentInChildren<HealthBar>();
     }
     private void Start()
     {
         tankController = new TankController(this);
         TankService.Instance.tanks.Add(this);
-        currentHealth = maxHealth;
+
     }
     private void Update()
     {
@@ -50,8 +49,6 @@ public class TankView : MonoBehaviour, IDamagable
                 StartCoroutine(ShootBulletDelay(shootDelay));
             }
         }
-        if (currentHealth <= 0)
-            DestroyTank();
     }
     private void FixedUpdate()
     {
@@ -116,8 +113,6 @@ public class TankView : MonoBehaviour, IDamagable
 
     public void ModifyHealth(float amount)
     {
-        currentHealth += amount;
-        healthBar.SetHealth(currentHealth);
     }
     public void DestroyTank()
     {
@@ -142,7 +137,6 @@ public class TankView : MonoBehaviour, IDamagable
     }
     private void OnDestroy()
     {
-        Debug.Log("Commencing Clean Slate Protocol");
-        
+
     }
 }
