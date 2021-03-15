@@ -38,10 +38,11 @@ public class TankView : MonoBehaviour, IDamagable
     {
         tankController = new TankController(this);
         TankService.Instance.tanks.Add(this);
-
+        currentHealth = maxHealth;
     }
     private void Update()
     {
+        CheckHealth();
         if (canShoot)
         {
             if (Mathf.Abs(shootJoystick.Direction.x) >= 0.7 || Mathf.Abs(shootJoystick.Direction.y) >= 0.7)
@@ -113,13 +114,21 @@ public class TankView : MonoBehaviour, IDamagable
 
     public void ModifyHealth(float amount)
     {
+        currentHealth += amount;
+
     }
+    private void CheckHealth()
+    {
+        if (currentHealth <= 0)
+            DestroyTank();
+    }
+
     public void DestroyTank()
     {
         Particles.Instance.CommenceTankExplosion(transform);
         TankService.Instance.SpawnBustedTank(transform);
         StartCoroutine(TankExplosionDelay());
-        this.enabled = false;
+        gameObject.SetActive(false);
     }
     IEnumerator ShootBulletDelay(float secs)
     {

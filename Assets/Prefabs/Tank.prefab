@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mvtSpeed: 10
   rotatingSpeed: 5
-  maxHealth: 0
+  maxHealth: 300
   tankExplosionDelay: 1
   shootDelay: 1
   renderers:
