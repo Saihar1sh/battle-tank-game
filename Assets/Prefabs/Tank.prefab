@@ -160,6 +160,7 @@ MonoBehaviour:
   maxHealth: 300
   tankExplosionDelay: 1
   shootDelay: 1
+  fireBulletBool: 0
   renderers:
   - {fileID: 273279129321030195}
   - {fileID: 273279129321030197}

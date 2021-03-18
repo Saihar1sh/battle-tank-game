@@ -14,6 +14,8 @@ public class TankView : MonoBehaviour, IDamagable
     private bool touchInput = true, KeyboardInput = true;
     private bool canShoot = true;
 
+    public bool fireBulletBool = false;
+
     //coloring---------------------------------
     public Renderer[] renderers;
 
@@ -25,24 +27,48 @@ public class TankView : MonoBehaviour, IDamagable
     [SerializeField]
     private Transform tankTurret, tankShootPos;
     private TankController tankController;
+    private HealthBar healthBar;
 
-    private event Action<float> OnHealthChanged = delegate { };
+
 
     private void Awake()
     {
+        //referencing
         tankRb = GetComponent<Rigidbody>();
         mvtJoystick = FindObjectOfType<FixedJoystick>();
         shootJoystick = FindObjectOfType<FloatingJoystick>();
+        healthBar = GetComponentInChildren<HealthBar>();
     }
     private void Start()
     {
+        //initialsing
         tankController = new TankController(this);
         TankService.Instance.tanks.Add(this);
         currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
+
     private void Update()
     {
         CheckHealth();
+        CheckCanShoot();
+        fireBulletBool = BulletService.Instance.fireAmmoBool;
+    }
+
+
+    private void FixedUpdate()
+    {
+        PlayerInput();
+        MoveTurret();
+    }
+
+    public void GetTankController(TankController _tankController)
+    {
+       this.tankController = _tankController;
+    }
+
+    private void CheckCanShoot()
+    {
         if (canShoot)
         {
             if (Mathf.Abs(shootJoystick.Direction.x) >= 0.7 || Mathf.Abs(shootJoystick.Direction.y) >= 0.7)
@@ -51,16 +77,6 @@ public class TankView : MonoBehaviour, IDamagable
             }
         }
     }
-    private void FixedUpdate()
-    {
-        PlayerInput();
-        MoveTurret();
-    }
-    public void GetTankController(TankController _tankController)
-    {
-       this.tankController = _tankController;
-    }
-
     private void MoveTurret()
     {
         if (shootJoystick.Direction.x != 0 && shootJoystick.Direction.y != 0)
@@ -109,20 +125,33 @@ public class TankView : MonoBehaviour, IDamagable
     private void Shoot()
     {
         //Debug.Log("shoot");
-        BulletService.Instance.InstantiateBullet(tankShootPos);
+        if (fireBulletBool)
+        {
+            BulletService.Instance.InstantiateFireBullet(tankShootPos);
+            return;
+        }
+        else
+            BulletService.Instance.InstantiateBullet(tankShootPos);
     }
 
     public void ModifyHealth(float amount)
     {
         currentHealth += amount;
-
+        healthBar.SetHealth(currentHealth);
     }
     private void CheckHealth()
     {
         if (currentHealth <= 0)
             DestroyTank();
     }
-
+    public void SetCurrentHealth(float k)
+    {
+        currentHealth = k;
+    }
+    public float ReturnCurrentHealth()
+    {
+        return currentHealth;
+    }
     public void DestroyTank()
     {
         Particles.Instance.CommenceTankExplosion(transform);
@@ -142,10 +171,7 @@ public class TankView : MonoBehaviour, IDamagable
     {
         yield return new WaitForSeconds(tankExplosionDelay);
         TankService.Instance.tanks.Remove(this);
+        ServiceEvents.Instance.OnPlayerDeathInVoke();
         Destroy(gameObject);
-    }
-    private void OnDestroy()
-    {
-
     }
 }

@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
-    public LayerMask tankMask;
     private Rigidbody bulletRB;
-    public float maxDamage, explosionForce, explosionRadius, maxLifetime = 2f, bulletSpeed= 20f;
-    public float damage = 10f;
+   // public float maxDamage, explosionForce, explosionRadius;
+    public float maxLifetime = 2f, bulletSpeed= 20f, damage = 10f;
 
     //private Particles ParticlesInstance;
     private void Awake()
@@ -29,19 +28,21 @@ public class BulletController : MonoBehaviour
     //To affect surroundings of bullet
     private void OnTriggerEnter(Collider other)
     {
+        #region damage radius develop later
+        /*        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, tankMask);
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    Rigidbody targetRB = colliders[i].GetComponent<Rigidbody>();
+                    if (!targetRB)
+                    {
+                        Debug.LogWarning("No Rigidbody attached to : " + colliders[i].name);
+                        continue;
+                    }
+                    targetRB.AddExplosionForce(explosionForce, transform.position, explosionRadius);
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, tankMask);
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            Rigidbody targetRB = colliders[i].GetComponent<Rigidbody>();
-            if (!targetRB)
-            {
-                Debug.LogWarning("No Rigidbody attached to : " + colliders[i].name);
-                continue;
-            }
-            targetRB.AddExplosionForce(explosionForce, transform.position, explosionRadius);
-
-        }
+                }
+        */
+        #endregion
         Particles.Instance.CommenceShellExplosion(transform);
     }
 
@@ -49,6 +50,7 @@ public class BulletController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Particles.Instance.CommenceShellExplosion(transform);
+        bool fireAmmo = BulletService.Instance.fireAmmoBool;
             if(collision.gameObject.tag.Equals("Enemy"))
             {
                 Particles.Instance.CommenceTankExplosion(collision.transform);
@@ -63,16 +65,23 @@ public class BulletController : MonoBehaviour
             }
             if(collision.gameObject.tag.Equals("Environment"))
             {
+                if (fireAmmo)
+                    Destroy(collision.gameObject);
+
                 Destroy(gameObject);
             }
     }
-    private float CalculateDamage(Vector3 targetPos)
-    {
-        Vector3 explosionToTarget = targetPos - transform.position;
-        float explosionDist = explosionToTarget.magnitude;
-        float relativeDist = (explosionRadius - explosionDist) / explosionRadius;
-        float damage = relativeDist * maxDamage;
-        damage = Mathf.Max(0f, damage);
-        return damage;
-    }
+    #region damage radius develop later
+
+    /*    private float CalculateDamage(Vector3 targetPos)
+        {
+            Vector3 explosionToTarget = targetPos - transform.position;
+            float explosionDist = explosionToTarget.magnitude;
+            float relativeDist = (explosionRadius - explosionDist) / explosionRadius;
+            float damage = relativeDist * maxDamage;
+            damage = Mathf.Max(0f, damage);
+            return damage;
+        }
+    */
+    #endregion
 }

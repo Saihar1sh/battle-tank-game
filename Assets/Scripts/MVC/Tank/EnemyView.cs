@@ -22,6 +22,8 @@ public class EnemyView : MonoBehaviour,IDamagable
 
     private NavMeshAgent meshAgent;
 
+    public int Id;
+
     private void Awake()
     {
         //referencing
@@ -36,7 +38,6 @@ public class EnemyView : MonoBehaviour,IDamagable
         AddDetails();
         currentHealth = maxHealth;
         HealthBar.SetMaxHealth(maxHealth);
-
     }
 
     // Update is called once per frame
@@ -44,7 +45,7 @@ public class EnemyView : MonoBehaviour,IDamagable
     {
         CheckHealth();
         //meshAgent.SetDestination(transform.position + transform.forward * 4f);
-
+        Debug.Log("Enemy Id: "+Id,gameObject);
     }
 
     private void CheckHealth()
@@ -93,6 +94,9 @@ public class EnemyView : MonoBehaviour,IDamagable
         Particles.Instance.CommenceTankExplosion(transform);
         gameObject.SetActive(false);
         TankService.Instance.SpawnBustedTank(transform);
+        TankService.Instance.IncreamentEnemyDeathCounter();
+        TankService.Instance.enemyTanks.Remove(this);
+        ServiceEvents.Instance.OnEnemyDeathInvoke();
         Destroy(gameObject, 2f);
     }
     public void ShootDelay(float secs)
@@ -109,7 +113,6 @@ public class EnemyView : MonoBehaviour,IDamagable
 
     private void OnDestroy()
     {
-        TankService.Instance.enemyTanks.Remove(this);
     }
 }
 

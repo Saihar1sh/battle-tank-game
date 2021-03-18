@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: PickupScriptableObjectList
+  m_EditorClassIdentifier: Assembly-CSharp::PickupScriptableList
+  pickupScriptableObj:
+  - {fileID: 11400000, guid: 3576fd39e74b87045994ba87203a2ce9, type: 2}
+  - {fileID: 11400000, guid: 1daab179be2d36f4fb74784d83b7d393, type: 2}
+  - {fileID: 11400000, guid: 736fbbdbb6fe53b4094d29f8e900445c, type: 2}
+  - {fileID: 11400000, guid: 757ecd8861aedc641a1c7b145cb46177, type: 2}

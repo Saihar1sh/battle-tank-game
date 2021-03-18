@@ -417,7 +417,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4699192327940527832}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -522,7 +522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mvtSpeed: 2
   rotatingSpeed: 2
-  maxHealth: 100
+  maxHealth: 200
   renderers:
   - {fileID: 7225838013483050515}
   - {fileID: 7225838014680581274}
@@ -530,6 +530,7 @@ MonoBehaviour:
   - {fileID: 7225838014044237751}
   tankTurret: {fileID: 7225838014044237753}
   tankShootPos: {fileID: 4699192327940527832}
+  Id: 0
 --- !u!195 &1535484914
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -628,7 +629,7 @@ GameObject:
   - component: {fileID: 7225838013483050513}
   - component: {fileID: 7225838013483050514}
   - component: {fileID: 7225838013483050515}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TankChassis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -707,7 +708,7 @@ GameObject:
   - component: {fileID: 7225838014044237753}
   - component: {fileID: 7225838014044237752}
   - component: {fileID: 7225838014044237751}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TankTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -784,7 +785,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7225838014188445281}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TankRenderers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -820,7 +821,7 @@ GameObject:
   - component: {fileID: 7225838014680581272}
   - component: {fileID: 7225838014680581273}
   - component: {fileID: 7225838014680581274}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TankTracksLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -899,7 +900,7 @@ GameObject:
   - component: {fileID: 7225838014849183546}
   - component: {fileID: 7225838014849183547}
   - component: {fileID: 7225838014849183548}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TankTracksRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -980,7 +981,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 148586, guid: f7167ad2844254441b40b8a300b4f1fe, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 496482, guid: f7167ad2844254441b40b8a300b4f1fe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1055,7 +1056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 148586, guid: f7167ad2844254441b40b8a300b4f1fe, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 496482, guid: f7167ad2844254441b40b8a300b4f1fe, type: 3}
       propertyPath: m_LocalPosition.x

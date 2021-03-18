@@ -15,7 +15,12 @@ public class TankService : MonoSingletonGeneric<TankService>
     public List<EnemyView> enemyTanks;
     public GameObject[] environment;
 
-    private bool enemiesDestroyed = false;
+    private int playerId, EnemyId;
+    private int waves = 1, enemyTanksIncreament = 5;
+    private bool waveStarted = false;
+
+    public int enemiesDestroyed { get; private set; } = 0;
+    public int playersDestroyed { get; private set; } = 0;
     protected override void Awake()
     {
         base.Awake();
@@ -38,7 +43,7 @@ public class TankService : MonoSingletonGeneric<TankService>
         }
 */        environment = GameObject.FindGameObjectsWithTag("Environment");
 
-
+        ServiceEvents.Instance.OnPlayerDeath += PlayerDeathsCounterIncreament;
     }
     private void Update()
     {
@@ -46,11 +51,14 @@ public class TankService : MonoSingletonGeneric<TankService>
         {
             CreateEnemyTank(tankList.tanks[0]);
             Debug.Log("Creating EnemyTank");
+
         }
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
             CreatePlayerTank();
         }
+        EnemyWaves();
+        Debug.Log("Enemies Destroyed : " + enemiesDestroyed);
     }
 
     public void CreatePlayerTank()
@@ -58,6 +66,7 @@ public class TankService : MonoSingletonGeneric<TankService>
         int i = Random.Range(1, tankList.tanks.Length);
         CreateTank(tankList.tanks[i]);
         Debug.Log("Creating Tank");
+
     }
 
     public TankController CreateTank(TankScriptableObject tankScriptableObject)
@@ -80,36 +89,45 @@ public class TankService : MonoSingletonGeneric<TankService>
         //enemyTanks[i].SetEnemyDetails(redTank);
 
     }
-
     public void SpawnBustedTank(Transform tankPos)
     {
         Vector3 pos = new Vector3(tankPos.position.x, 0, tankPos.position.z);
         GameObject bustedTank = Instantiate(BustedTankPrefab, pos, tankPos.rotation);
         Destroy(bustedTank, 2f);
     }
-
-/*    public void DestroyEverything()
-    {
-        StartCoroutine(Destruction());
-    }
-    public void DestroyEnvironment()
-    {
-        StartCoroutine(DestroyEnvironmentDelay());
-    }
-    public void DestroyTanks()
-    {
-        StartCoroutine(DestroyTanksDelay());
-    }
-
-    private IEnumerator DestroyTanksDelay()
-    {
-        while(tanks.Count != 0)
+    #region DestroyEverthing
+    /*    public void DestroyEverything()
         {
-            Destroy(tanks[0].gameObject);
-            tanks.RemoveAt(0);
-            yield return new WaitForSeconds(1f);
+            StartCoroutine(Destruction());
         }
-*/
+        public void DestroyEnvironment()
+        {
+            StartCoroutine(DestroyEnvironmentDelay());
+        }
+        public void DestroyTanks()
+        {
+            StartCoroutine(DestroyTanksDelay());
+        }
+
+        private IEnumerator DestroyTanksDelay()
+        {
+            while(tanks.Count != 0)
+            {
+                Destroy(tanks[0].gameObject);
+                tanks.RemoveAt(0);
+                yield return new WaitForSeconds(1f);
+            }
+    private IEnumerator DestroyEnvironmentDelay()
+    {
+        for (int i = 0; i < environment.Length; i++)
+        {
+            Destroy(environment[i].gameObject);
+            Debug.Log(environment[i]);
+            yield return new WaitForSeconds(.1f);
+        }
+    }
+    */
+    #endregion
     public void DestroyEnemies()
     {
         StartCoroutine(DestroyEnemyDelay());
@@ -123,16 +141,51 @@ public class TankService : MonoSingletonGeneric<TankService>
             enemyTanks.RemoveAt(0);
             yield return new WaitForSeconds(.5f);
         }
-        StartCoroutine(DestroyEnvironmentDelay());
+        //StartCoroutine(DestroyEnvironmentDelay());
 
     }
-    private IEnumerator DestroyEnvironmentDelay()
+    public void IncreamentEnemyDeathCounter()
     {
-        for (int i = 0; i < environment.Length; i++)
+        enemiesDestroyed++;
+    }
+    public void SetEnemiesDestroyedCount(int h)
+    {
+        enemiesDestroyed = h;
+
+    }
+    public void EnemyWaves()
+    {
+        if(enemyTanks.Count == 0 && waveStarted == false)
         {
-            Destroy(environment[i].gameObject);
-            Debug.Log(environment[i]);
-            yield return new WaitForSeconds(.1f);
+            StartCoroutine(WaveDelay(5));
         }
     }
+
+    private void WaveStart()
+    {
+        for (int i = 0; i < enemyTanksIncreament; i++)
+        {
+            CreateEnemyTank(tankList.tanks[0]);
+        }
+        waves++;
+    }
+
+    IEnumerator WaveDelay(float _secs)
+    {
+        waveStarted = true;
+        yield return new WaitForSeconds(_secs);
+        WaveStart();
+        waveStarted = false;
+
+    }
+    private void PlayerDeathsCounterIncreament()
+    {
+        playersDestroyed++;
+    }
+    /*    private void OnDestroy()
+        {
+            Debug.Log("Commencing Clean Slate Protocol.................");
+            DestroyEnemies()
+        }
+    */
 }

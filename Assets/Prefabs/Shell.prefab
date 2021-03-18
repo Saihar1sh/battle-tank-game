@@ -92,15 +92,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5689cca4dae61e747b01a0afa955b38f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tankMask:
-    serializedVersion: 2
-    m_Bits: 256
-  maxDamage: 100
-  explosionForce: 1000
-  explosionRadius: 5
   maxLifetime: 2
   bulletSpeed: 1000
-  damage: 100
+  damage: 10
+  fireBullet: 0
 --- !u!54 &1690475159
 Rigidbody:
   m_ObjectHideFlags: 0
