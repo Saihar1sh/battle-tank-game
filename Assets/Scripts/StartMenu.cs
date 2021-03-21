@@ -29,7 +29,7 @@ public class StartMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     private void PlayGame()
     {
@@ -48,9 +48,9 @@ public class StartMenu : MonoBehaviour
 
         while (!op.isDone)
         {
-            float progress = Mathf.Clamp01(op.progress /0.9f);
+            float progress = Mathf.Clamp01(op.progress / 0.9f);
             progressSlider.value = progress;
-            progressText.text = progress * 100f+" %";
+            progressText.text = progress * 100f + " %";
             yield return null;
         }
     }

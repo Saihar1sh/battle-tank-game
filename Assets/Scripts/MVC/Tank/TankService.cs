@@ -18,7 +18,7 @@ public class TankService : MonoSingletonGeneric<TankService>
     private int playerId, EnemyId;
     private int waves = 1, enemyTanksIncreament = 5;
 
-   // [HideInInspector]
+    // [HideInInspector]
     public bool waveStarted = false;
 
     public int enemiesDestroyed { get; private set; } = 0;
@@ -83,7 +83,7 @@ public class TankService : MonoSingletonGeneric<TankService>
     {
         randomSpawnPos = new Vector3(Random.Range(-42, 43), 0, Random.Range(39, -43));
         TankModel tankModel = new TankModel(tankScriptableObject);
-        TankController tankController = new TankController(Enemy, tankModel,randomSpawnPos, Quaternion.identity);
+        TankController tankController = new TankController(Enemy, tankModel, randomSpawnPos, Quaternion.identity);
         return tankController;
 
     }
@@ -153,7 +153,7 @@ public class TankService : MonoSingletonGeneric<TankService>
     }
     public void EnemyWaves()
     {
-        if(enemyTanks.Count == 0 && waveStarted == false)
+        if (enemyTanks.Count == 0 && waveStarted == false)
         {
             StartCoroutine(WaveDelay(5));
         }
@@ -163,8 +163,8 @@ public class TankService : MonoSingletonGeneric<TankService>
     {
         for (int i = 0; i < enemyTanksIncreament; i++)
         {
-            TankScriptableObject enemyTanker = tankList.tanks[0];
-            CreateEnemyTank(enemyTanker);
+            //TankScriptableObject enemyTanker = tankList.tanks[0];
+            CreateEnemyTank(tankList.tanks[0]);
         }
         waves++;
         enemyTanksIncreament += 3;
