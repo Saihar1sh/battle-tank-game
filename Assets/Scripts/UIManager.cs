@@ -12,13 +12,20 @@ public class UIManager : MonoSingletonGeneric<UIManager>
 
     public int score  = 10 ;
 
-    public TextMeshProUGUI AcheivementTxt;
+    [SerializeField]
+    private Image waveStartImage, AcheivementImage, PauseImage;
 
-    private bool UIVisible = true;
+    [SerializeField]
+    private TextMeshProUGUI AcheivementTxt, AcheivementTitle, WaveTxt;
+
+    private bool TextVisible = true, ImageUIVisible = true, waveStart, pauseMenuEnable = true;
+
 
     void Start()
     {
-        AcheivementTxt.enabled = false;
+        AcheivementImage.gameObject.SetActive(false);
+        waveStartImage.gameObject.SetActive(false);
+
         ServiceEvents.Instance.OnEnemyDeath += ScoreIncreament;
         ServiceEvents.Instance.OnEnemiesDestroyed += EnemiesDestroyedAchievements;
         ServiceEvents.Instance.OnBulletsFired += BulletsFiredAchievement;
@@ -27,30 +34,61 @@ public class UIManager : MonoSingletonGeneric<UIManager>
     private void Update()
     {
         //AcheivementTxt.enabled = UIVisible;
+        waveStart = TankService.Instance.waveStarted;
+        WaveStarts();
+        PauseMenuEnable();
     }
 
     private void BulletsFiredAchievement()
     {
+        AcheivementTitle.text = "Si vis pacem, Para bellum";
         AcheivementTxt.text = "Bullets Fired: " + ServiceEvents.Instance.bulletsFiredAchievement;
-        if(UIVisible)
-            StartCoroutine(UIVisiblePeriod(AcheivementTxt));
+        if(ImageUIVisible)
+            StartCoroutine(ImageUIVisiblePeriod(AcheivementImage));
     }
 
     private void PlayersDestroyedAchievement()
     {
-        AcheivementTxt.text = "Players Destroyed: " + ServiceEvents.Instance.playersDeadAchievement;
-        if (UIVisible)
-            StartCoroutine(UIVisiblePeriod(AcheivementTxt));
+        AcheivementTitle.text = "Death is not the End";
+        AcheivementTxt.text = "Player Tanks Destroyed: " + ServiceEvents.Instance.playersDeadAchievement;
+        if (ImageUIVisible)
+            StartCoroutine(ImageUIVisiblePeriod(AcheivementImage));
 
     }
 
     private void EnemiesDestroyedAchievements()
     {
+        AcheivementTitle.text = "Uncle Sam brought home gifts";
         AcheivementTxt.text = "Enemies Destroyed: "+ServiceEvents.Instance.enemiesDeadAchievement;
-        if (UIVisible)
-            StartCoroutine(UIVisiblePeriod(AcheivementTxt));
+        if (ImageUIVisible)
+            StartCoroutine(ImageUIVisiblePeriod(AcheivementImage));
+    }
+    private void PauseMenuEnable()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            PauseImage.gameObject.SetActive(pauseMenuEnable);
+            pauseMenuEnable = !pauseMenuEnable;
+            int timescale = pauseMenuEnable ? 1 : 0;
+            Time.timeScale = timescale;
+        }
+    }
+    private void RampagePickup()
+    {
+        AcheivementTitle.text = "Love the smell of napalm in the morning";
+        AcheivementTxt.text = "Rampages picked : ";
+    }
+    private void RapidAmmoPickup()
+    {
 
-
+    }
+    private void WaveStarts()
+    {
+        if (waveStart)
+        {
+            WaveTxt.text = "Wave " + TankService.Instance.GetCurrentWave() + " Completed.";
+        }
+        waveStartImage.gameObject.SetActive(waveStart);
     }
 
     private void ScoreIncreament()
@@ -58,12 +96,22 @@ public class UIManager : MonoSingletonGeneric<UIManager>
         text.text = "Score : " + score;
         score += 10;
     }
-    IEnumerator UIVisiblePeriod(TextMeshProUGUI proUGUI)
+/*    IEnumerator TextVisiblePeriod(TextMeshProUGUI proUGUI)
     {
-        UIVisible = false;
+        TextVisible = false;
         proUGUI.enabled = true;
         yield return new WaitForSeconds(5f);
         proUGUI.enabled = false;
-        UIVisible = true;
+        TextVisible = true;
     }
+*/    IEnumerator ImageUIVisiblePeriod(Image image)
+    {
+        GameObject gameObject = image.gameObject;
+        ImageUIVisible = false;
+        gameObject.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        gameObject.SetActive(false);
+        ImageUIVisible = true;
+    }
+
 }

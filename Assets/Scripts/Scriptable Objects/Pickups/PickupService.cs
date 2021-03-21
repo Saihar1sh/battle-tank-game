@@ -7,6 +7,8 @@ public class PickupService : MonoSingletonGeneric<PickupService>
 
     private int meshIndex;
     private float timeCheck = 1;
+
+    public int rampagesPicked;
     // Start is called before the first frame update
     void Start()
     {

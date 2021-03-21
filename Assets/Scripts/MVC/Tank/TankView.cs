@@ -14,6 +14,7 @@ public class TankView : MonoBehaviour, IDamagable
     private bool touchInput = true, KeyboardInput = true;
     private bool canShoot = true;
 
+    [HideInInspector]
     public bool fireBulletBool = false;
 
     //coloring---------------------------------
@@ -71,7 +72,7 @@ public class TankView : MonoBehaviour, IDamagable
     {
         if (canShoot)
         {
-            if (Mathf.Abs(shootJoystick.Direction.x) >= 0.7 || Mathf.Abs(shootJoystick.Direction.y) >= 0.7)
+            if (Mathf.Abs(shootJoystick.Direction.x) >= 0.7 || Mathf.Abs(shootJoystick.Direction.y) >= 0.7 && gameObject.activeInHierarchy)
             {
                 StartCoroutine(ShootBulletDelay(shootDelay));
             }
@@ -136,7 +137,7 @@ public class TankView : MonoBehaviour, IDamagable
 
     public void ModifyHealth(float amount)
     {
-        currentHealth += amount;
+        //currentHealth += amount;      //-----------------------
         healthBar.SetHealth(currentHealth);
     }
     private void CheckHealth()
@@ -156,6 +157,7 @@ public class TankView : MonoBehaviour, IDamagable
     {
         Particles.Instance.CommenceTankExplosion(transform);
         TankService.Instance.SpawnBustedTank(transform);
+        ServiceEvents.Instance.OnPlayerDeathInVoke();
         StartCoroutine(TankExplosionDelay());
         gameObject.SetActive(false);
     }
@@ -171,7 +173,6 @@ public class TankView : MonoBehaviour, IDamagable
     {
         yield return new WaitForSeconds(tankExplosionDelay);
         TankService.Instance.tanks.Remove(this);
-        ServiceEvents.Instance.OnPlayerDeathInVoke();
         Destroy(gameObject);
     }
 }

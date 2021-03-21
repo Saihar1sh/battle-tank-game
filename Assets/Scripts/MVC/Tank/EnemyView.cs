@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyView : MonoBehaviour,IDamagable
 {
     //Values--------------------------
-    public float mvtSpeed, rotatingSpeed, maxHealth;
+    public float mvtSpeed, rotatingSpeed, maxHealth = 200;
 
     private float currentHealth;
     private bool canShoot = true;
@@ -56,9 +56,6 @@ public class EnemyView : MonoBehaviour,IDamagable
 
     public void MoveTurret(Transform player)
     {
-        /*        Vector3 turretRotation = new Vector3(player.x, 0, player.y) * rotatingSpeed;
-                tankTurret.rotation = Quaternion.LookRotation(turretRotation);
-        */
         tankTurret.transform.LookAt(player);
     }
     public void Shoot()

@@ -6,6 +6,7 @@ public class RampageCube : MonoBehaviour
     private bool rapidAmmoBool = true;
 
     public float rampageTime = 10f;
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -16,6 +17,7 @@ public class RampageCube : MonoBehaviour
                 if (rapidAmmoBool)
                     StartCoroutine(RapidAmmoTime(tankView, rampageTime));
                 gameObject.GetComponent<MeshRenderer>().enabled = false;
+
             }
         }
 
