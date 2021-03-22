@@ -16,7 +16,7 @@ public class StartMenu : MonoBehaviour
     private Slider progressSlider;
     [SerializeField]
     private Text progressText;
-    // Start is called before the first frame update
+
     void Start()
     {
         playBtn.onClick.AddListener(PlayGame);
@@ -26,11 +26,6 @@ public class StartMenu : MonoBehaviour
         progressSlider.value = progressSlider.minValue;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     private void PlayGame()
     {
         StartCoroutine(LoadAsync(1));

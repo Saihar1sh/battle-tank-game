@@ -16,7 +16,8 @@ public class TankService : MonoSingletonGeneric<TankService>
     public GameObject[] environment;
 
     private int playerId, EnemyId;
-    private int waves = 1, enemyTanksIncreament = 5;
+    private int enemyTanksIncreament = 5;
+    public int waves { get; private set; } = 1;
 
     // [HideInInspector]
     public bool waveStarted = false;
@@ -183,9 +184,9 @@ public class TankService : MonoSingletonGeneric<TankService>
     {
         playersDestroyed++;
     }
-    public int GetCurrentWave()
+    public void SetCurrentWave(int num)
     {
-        return waves;
+        waves = num;
     }
     /*    private void OnDestroy()
         {

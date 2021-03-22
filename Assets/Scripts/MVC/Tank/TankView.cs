@@ -65,7 +65,7 @@ public class TankView : MonoBehaviour, IDamagable
 
     public void GetTankController(TankController _tankController)
     {
-       this.tankController = _tankController;
+        this.tankController = _tankController;
     }
 
     private void CheckCanShoot()

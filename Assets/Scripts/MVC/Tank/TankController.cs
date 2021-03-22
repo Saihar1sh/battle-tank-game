@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TankController 
+public class TankController
 {
     public TankController(TankView tankView)
     {
@@ -14,7 +14,7 @@ public class TankController
     }
     public TankController(EnemyView enemyPrefab, TankModel tankModel, Vector3 _pos, Quaternion _rotation)
     {
-        EnemyView  = GameObject.Instantiate<EnemyView>(enemyPrefab, _pos, _rotation);
+        EnemyView = GameObject.Instantiate<EnemyView>(enemyPrefab, _pos, _rotation);
         //EnemyView.SetEnemyDetails(tankModel);
     }
 
@@ -30,11 +30,6 @@ public class TankController
     {
         for (int i = 0; i < renderers.Length; i++)
             renderers[i].material.color = _color;
-
-    }
-
-    public void ApplyHealth(float amount)
-    {
 
     }
 

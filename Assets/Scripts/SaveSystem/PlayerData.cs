@@ -9,13 +9,14 @@ public class PlayerData
     internal int enemiesKilled;
     internal int shellsFired;
     internal float playerHealth;
+    internal int waveNo;
 
     internal float[] position;
 
     public PlayerData(Player _player)
     {
         enemiesKilled = _player.enemiesKilled;
-        shellsFired = _player.shellsFired;
+        shellsFired = _player.bulletsFired;
         playerHealth = _player.currentHealth;
 
         position = new float[3];

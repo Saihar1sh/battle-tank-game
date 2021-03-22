@@ -10,40 +10,54 @@ public class UIManager : MonoSingletonGeneric<UIManager>
     [SerializeField]
     private TextMeshProUGUI text;
 
-    public int score  = 10 ;
+    private int score = 0;
+
+    public int scoreIncrement = 10;
 
     [SerializeField]
     private Image waveStartImage, AcheivementImage, PauseImage;
 
     [SerializeField]
-    private TextMeshProUGUI AcheivementTxt, AcheivementTitle, WaveTxt;
+    private Button pauseBtn, saveBtn, loadBtn;
 
-    private bool TextVisible = true, ImageUIVisible = true, waveStart, pauseMenuEnable = true;
+    [SerializeField]
+    private TextMeshProUGUI AcheivementTxt, AcheivementTitle, WaveTxt, WaveNoTxt;
 
+    private bool ImageUIVisible = true, waveStart, pauseMenuEnable = true;
+
+    [SerializeField]
+    private Player player;
 
     void Start()
     {
         AcheivementImage.gameObject.SetActive(false);
         waveStartImage.gameObject.SetActive(false);
+        PauseImage.gameObject.SetActive(false);
+        pauseBtn.onClick.AddListener(PauseMenuEnable);
+
 
         ServiceEvents.Instance.OnEnemyDeath += ScoreIncreament;
         ServiceEvents.Instance.OnEnemiesDestroyed += EnemiesDestroyedAchievements;
         ServiceEvents.Instance.OnBulletsFired += BulletsFiredAchievement;
         ServiceEvents.Instance.OnPlayersDestroyed += PlayersDestroyedAchievement;
+
+        WaveNoTxt.text = "Wave No. " + 1;
     }
     private void Update()
     {
         //AcheivementTxt.enabled = UIVisible;
         waveStart = TankService.Instance.waveStarted;
         WaveStarts();
-        PauseMenuEnable();
+
+        if (Input.GetKeyDown(KeyCode.P))
+            PauseMenuEnable();
     }
 
     private void BulletsFiredAchievement()
     {
         AcheivementTitle.text = "Si vis pacem, Para bellum";
         AcheivementTxt.text = "Bullets Fired: " + ServiceEvents.Instance.bulletsFiredAchievement;
-        if(ImageUIVisible)
+        if (ImageUIVisible)
             StartCoroutine(ImageUIVisiblePeriod(AcheivementImage));
     }
 
@@ -59,19 +73,25 @@ public class UIManager : MonoSingletonGeneric<UIManager>
     private void EnemiesDestroyedAchievements()
     {
         AcheivementTitle.text = "Uncle Sam brought home gifts";
-        AcheivementTxt.text = "Enemies Destroyed: "+ServiceEvents.Instance.enemiesDeadAchievement;
+        AcheivementTxt.text = "Enemies Destroyed: " + ServiceEvents.Instance.enemiesDeadAchievement;
         if (ImageUIVisible)
             StartCoroutine(ImageUIVisiblePeriod(AcheivementImage));
     }
     private void PauseMenuEnable()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            PauseImage.gameObject.SetActive(pauseMenuEnable);
-            pauseMenuEnable = !pauseMenuEnable;
-            int timescale = pauseMenuEnable ? 1 : 0;
-            Time.timeScale = timescale;
-        }
+        PauseImage.gameObject.SetActive(pauseMenuEnable);
+        pauseMenuEnable = !pauseMenuEnable;
+        int timescale = pauseMenuEnable ? 1 : 0;
+        Time.timeScale = timescale;
+    }
+
+    private void SaveGame()
+    {
+        player.SaveGame();
+    }
+    private void LoadGame()
+    {
+        player.LoadGame();
     }
     private void RampagePickup()
     {
@@ -86,25 +106,18 @@ public class UIManager : MonoSingletonGeneric<UIManager>
     {
         if (waveStart)
         {
-            WaveTxt.text = "Wave " + TankService.Instance.GetCurrentWave() + " Completed.";
+            WaveTxt.text = "Wave " + TankService.Instance.waves + " Completed.";
+            WaveNoTxt.text = "Wave No. " + TankService.Instance.waves;
         }
         waveStartImage.gameObject.SetActive(waveStart);
     }
 
     private void ScoreIncreament()
     {
-        text.text = "Score : " + score;
-        score += 10;
+        score += scoreIncrement;
+        text.text = "" + score;
     }
-/*    IEnumerator TextVisiblePeriod(TextMeshProUGUI proUGUI)
-    {
-        TextVisible = false;
-        proUGUI.enabled = true;
-        yield return new WaitForSeconds(5f);
-        proUGUI.enabled = false;
-        TextVisible = true;
-    }
-*/    IEnumerator ImageUIVisiblePeriod(Image image)
+    IEnumerator ImageUIVisiblePeriod(Image image)
     {
         GameObject gameObject = image.gameObject;
         ImageUIVisible = false;

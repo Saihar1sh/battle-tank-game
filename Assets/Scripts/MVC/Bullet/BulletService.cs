@@ -5,7 +5,7 @@ using UnityEngine;
 public class BulletService : MonoSingletonGeneric<BulletService>
 {
     [SerializeField]
-    private BulletController BulletPrefab,  FireBulletPrefab;
+    private BulletController BulletPrefab, FireBulletPrefab;
 
     public bool fireAmmoBool;
 
@@ -26,7 +26,7 @@ public class BulletService : MonoSingletonGeneric<BulletService>
         bulletsFired++;
     }
 
-    public void SetBulletsFired(int i) 
+    public void SetBulletsFired(int i)
     {
         bulletsFired = i;
     }

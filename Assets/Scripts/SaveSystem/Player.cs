@@ -6,7 +6,8 @@ public class Player : MonoBehaviour
 {
 
     internal int enemiesKilled;
-    internal int shellsFired;
+    internal int bulletsFired;
+    internal int waveNo;
     internal float currentHealth;
 
     private TankView tank;
@@ -19,7 +20,8 @@ public class Player : MonoBehaviour
     private void Update()
     {
         enemiesKilled = TankService.Instance.enemiesDestroyed;
-        shellsFired = BulletService.Instance.bulletsFired;
+        waveNo = TankService.Instance.waves;
+        bulletsFired = BulletService.Instance.bulletsFired;
         currentHealth = tank.ReturnCurrentHealth();
     }
 
@@ -32,9 +34,10 @@ public class Player : MonoBehaviour
     {
         PlayerData data = SaveSystem.LoadPlayer();
 
-        TankService.Instance.SetEnemiesDestroyedCount(data.enemiesKilled) ;
+        TankService.Instance.SetEnemiesDestroyedCount(data.enemiesKilled);
         BulletService.Instance.SetBulletsFired(data.shellsFired);
         tank.SetCurrentHealth(data.playerHealth);
+        TankService.Instance.SetCurrentWave(data.waveNo);
 
         Vector3 position = new Vector3(data.position[0], data.position[1], data.position[2]);
 

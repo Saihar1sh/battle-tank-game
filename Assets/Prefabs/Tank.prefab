@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 273279129737819177}
   - component: {fileID: 273279129737819179}
   - component: {fileID: 273279129737819182}
+  - component: {fileID: 114787148512090632}
   m_Layer: 8
   m_Name: Tank
   m_TagString: Player
@@ -168,6 +169,18 @@ MonoBehaviour:
   - {fileID: 273279129321030193}
   tankTurret: {fileID: 273279129318604971}
   tankShootPos: {fileID: 4054966383293933489}
+--- !u!114 &114787148512090632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273279129319103811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8089e3b37dafc1a49b4061490f315d20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &273279129319103813
 GameObject:
   m_ObjectHideFlags: 0
