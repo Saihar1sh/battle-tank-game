@@ -4,25 +4,44 @@ using UnityEngine;
 public class BulletController : MonoBehaviour
 {
     private Rigidbody bulletRB;
-   // public float maxDamage, explosionForce, explosionRadius;
-    public float maxLifetime = 2f, bulletSpeed= 20f, damage = 10f;
+    // public float maxDamage, explosionForce, explosionRadius;
+    public float maxLifetime = 2f, bulletSpeed = 20f, damage = 10f;
 
-    //private Particles ParticlesInstance;
+    private MeshRenderer meshRenderer;
+    /*    private BulletScriptableObject bulletScriptableObject;
+        private BulletController bullet;
+        private Vector3 zero;
+        private Quaternion identity;
+
+        public BulletController(BulletScriptableObject bulletScriptableObject, BulletController bullet, Vector3 zero, Quaternion identity)
+        {
+            this.bulletScriptableObject = bulletScriptableObject;
+            this.bullet = bullet;
+            this.zero = zero;
+            this.identity = identity;
+        }
+
+        //private Particles ParticlesInstance;
+    */
     private void Awake()
     {
         bulletRB = GetComponent<Rigidbody>();
-        
+        meshRenderer = gameObject.GetComponent<MeshRenderer>();
+
     }
     // Start is called before the first frame update
     void Start()
     {
         //ParticlesInstance = (Particles) Particles.GetInstance();
+    }
+    private void OnEnable()
+    {
+        meshRenderer.enabled = true;
         bulletRB.AddForce(transform.forward * bulletSpeed);
-        Destroy(gameObject, maxLifetime);
     }
     private void Update()
     {
-        
+
     }
 
     //To affect surroundings of bullet
@@ -51,25 +70,27 @@ public class BulletController : MonoBehaviour
     {
         Particles.Instance.CommenceShellExplosion(transform);
         bool fireAmmo = BulletService.Instance.fireAmmoBool;
-            if(collision.gameObject.tag.Equals("Enemy"))
-            {
-                Particles.Instance.CommenceTankExplosion(collision.transform);
-                EnemyView enemy = collision.gameObject.GetComponent<EnemyView>();
-                enemy.ModifyHealth(-damage);
-            }
-            if (collision.gameObject.tag.Equals("Player"))
-            {
-                Particles.Instance.CommenceTankExplosion(collision.transform);
-                TankView player = collision.gameObject.GetComponent<TankView>();
-                player.ModifyHealth(-damage);
-            }
-            if(collision.gameObject.tag.Equals("Environment"))
-            {
-                if (fireAmmo)
-                    Destroy(collision.gameObject);
+        if (collision.gameObject.tag.Equals("Enemy"))
+        {
+            Particles.Instance.CommenceTankExplosion(collision.transform);
+            EnemyView enemy = collision.gameObject.GetComponent<EnemyView>();
+            enemy.ModifyHealth(-damage);
+        }
+        if (collision.gameObject.tag.Equals("Player"))
+        {
+            Particles.Instance.CommenceTankExplosion(collision.transform);
+            TankView player = collision.gameObject.GetComponent<TankView>();
+            player.ModifyHealth(-damage);
+        }
+        if (collision.gameObject.tag.Equals("Environment"))
+        {
+            if (fireAmmo)
+                Destroy(collision.gameObject);
 
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
+        }
+        //meshRenderer.enabled = false;
+        gameObject.SetActive(false);
     }
     #region damage radius develop later
 

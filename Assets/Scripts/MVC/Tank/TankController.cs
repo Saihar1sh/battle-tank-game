@@ -7,6 +7,10 @@ public class TankController
         tankView.GetTankController(this);
 
     }
+    public TankController(EnemyView enemyView)
+    {
+        enemyView.GetControllerTank(this);
+    }
     public TankController(TankView tankPrefab, TankModel tankModel, Vector3 _pos, Quaternion _rotation)
     {
         TankView = GameObject.Instantiate<TankView>(tankPrefab, _pos, _rotation);

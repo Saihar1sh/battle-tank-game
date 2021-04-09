@@ -7,6 +7,7 @@ public class BulletService : MonoSingletonGeneric<BulletService>
     [SerializeField]
     private BulletController BulletPrefab, FireBulletPrefab;
 
+
     public bool fireAmmoBool;
 
     public int bulletsFired { get; private set; }
@@ -15,9 +16,11 @@ public class BulletService : MonoSingletonGeneric<BulletService>
     {
         base.Awake();
     }
-    public void InstantiateBullet(Transform transform)
+    public void InstantiateBullet(Transform t)
     {
-        Instantiate(BulletPrefab, transform.position, transform.rotation);
+        //Instantiate(BulletPrefab, transform.position, transform.rotation);
+        //poolEnum = PoolEnum.Bullets;
+        //ObjectPool.Instance.SpawnFromPool(PoolEnum.Bullets, t.position, t.rotation);
         bulletsFired++;
     }
     public void InstantiateFireBullet(Transform transform)

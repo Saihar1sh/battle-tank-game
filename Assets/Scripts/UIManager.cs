@@ -35,6 +35,9 @@ public class UIManager : MonoSingletonGeneric<UIManager>
         PauseImage.gameObject.SetActive(false);
         pauseBtn.onClick.AddListener(PauseMenuEnable);
 
+        saveBtn.onClick.AddListener(SaveGame);
+        loadBtn.onClick.AddListener(LoadGame);
+
 
         ServiceEvents.Instance.OnEnemyDeath += ScoreIncreament;
         ServiceEvents.Instance.OnEnemiesDestroyed += EnemiesDestroyedAchievements;

@@ -10,7 +10,7 @@ public class TankView : MonoBehaviour, IDamagable
     [Tooltip("Reloading Time")]
     public float shootDelay = 1f;
     //private Vector3 rotation;
-    private float currentHealth;
+    public float currentHealth;
     private bool touchInput = true, KeyboardInput = true;
     private bool canShoot = true;
 
@@ -160,6 +160,7 @@ public class TankView : MonoBehaviour, IDamagable
         ServiceEvents.Instance.OnPlayerDeathInVoke();
         StartCoroutine(TankExplosionDelay());
         gameObject.SetActive(false);
+        PoolServiceTank.Instance.ReturnItem(tankController);
     }
     IEnumerator ShootBulletDelay(float secs)
     {

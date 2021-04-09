@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyView : MonoBehaviour,IDamagable
+public class EnemyView : MonoBehaviour, IDamagable
 {
     //Values--------------------------
     public float mvtSpeed, rotatingSpeed, maxHealth = 200;
@@ -14,6 +14,7 @@ public class EnemyView : MonoBehaviour,IDamagable
     public Renderer[] renderers;
 
     private Color tankColor;
+    private TankController tankController;
 
     private HealthBar HealthBar;
     private TankModel redTankModel;
@@ -35,6 +36,7 @@ public class EnemyView : MonoBehaviour,IDamagable
     void Start()
     {
         //initialing values
+        tankController = new TankController(this);
         AddDetails();
         currentHealth = maxHealth;
         HealthBar.SetMaxHealth(maxHealth);
@@ -45,7 +47,12 @@ public class EnemyView : MonoBehaviour,IDamagable
     {
         CheckHealth();
         //meshAgent.SetDestination(transform.position + transform.forward * 4f);
-        Debug.Log("Enemy Id: "+Id,gameObject);
+        Debug.Log("Enemy Id: " + Id, gameObject);
+    }
+
+    public void GetControllerTank(TankController _tankController)
+    {
+        this.tankController = _tankController;
     }
 
     private void CheckHealth()
@@ -91,13 +98,14 @@ public class EnemyView : MonoBehaviour,IDamagable
         Particles.Instance.CommenceTankExplosion(transform);
         gameObject.SetActive(false);
         TankService.Instance.SpawnBustedTank(transform);
+        PoolServiceTank.Instance.ReturnItem(tankController);
         TankService.Instance.IncreamentEnemyDeathCounter();
         TankService.Instance.enemyTanks.Remove(this);
         ServiceEvents.Instance.OnEnemyDeathInvoke();
-        Destroy(gameObject, 2f);
     }
     public void ShootDelay(float secs)
-    {   if(canShoot)
+    {
+        if (canShoot)
             StartCoroutine(ShootBulletDelay(secs));
     }
     IEnumerator ShootBulletDelay(float secs)

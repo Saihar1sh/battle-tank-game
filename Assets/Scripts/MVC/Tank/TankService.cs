@@ -8,11 +8,15 @@ public class TankService : MonoSingletonGeneric<TankService>
     public EnemyView Enemy;
     public GameObject BustedTankPrefab;
     public TankScriptableObjectList tankList;
+    public PoolServiceTank serviceTank;
 
     private Vector3 randomSpawnPos;
 
     public List<TankView> tanks;
     public List<EnemyView> enemyTanks;
+
+    private int tankControl = 0;
+
     public GameObject[] environment;
 
     private int playerId, EnemyId;
@@ -20,7 +24,7 @@ public class TankService : MonoSingletonGeneric<TankService>
     public int waves { get; private set; } = 1;
 
     // [HideInInspector]
-    public bool waveStarted = false;
+    public bool waveStarted = false, firstWave = true;
 
     public int enemiesDestroyed { get; private set; } = 0;
     public int playersDestroyed { get; private set; } = 0;
@@ -30,21 +34,17 @@ public class TankService : MonoSingletonGeneric<TankService>
     }
     void Start()
     {
-        /*        //int rand = Random.Range(1 , tankList.tanks.Length);
+        int rand = Random.Range(1, tankList.tanks.Length);
 
-                //tanks[0].SetTankDetails(new TankModel(tankList.tanks[rand]));
+        CreatePlayerTank();
 
-                for (int i = 0; i < enemyTanks.Count; i++)
-                {
-                    //TankModel redTank = new TankModel(tankList.tanks[0]);
-                }
+        for (int i = 0; i < 5; i++)
+        {
+            CreateEnemyTank(tankList.tanks[0]);
+            if (i == 4)
+                firstWave = false;
+        }
 
-                 CreateTank(tankList.tanks[rand]);
-                for (int i = 0; i < 5; i++)
-                {
-                    CreateEnemyTank(tankList.tanks[0]);
-                }
-        */
         environment = GameObject.FindGameObjectsWithTag("Environment");
 
         ServiceEvents.Instance.OnPlayerDeath += PlayerDeathsCounterIncreament;
@@ -61,7 +61,8 @@ public class TankService : MonoSingletonGeneric<TankService>
         {
             CreatePlayerTank();
         }
-        EnemyWaves();
+        if (!firstWave)
+            EnemyWaves();
         Debug.Log("Enemies Destroyed : " + enemiesDestroyed);
     }
 
@@ -70,21 +71,22 @@ public class TankService : MonoSingletonGeneric<TankService>
         int i = Random.Range(1, tankList.tanks.Length);
         CreateTank(tankList.tanks[i]);
         Debug.Log("Creating Tank");
-
     }
 
     public TankController CreateTank(TankScriptableObject tankScriptableObject)
     {
         randomSpawnPos = new Vector3(Random.Range(-42, 43), 0, Random.Range(39, -43));
         TankModel tankModel = new TankModel(tankScriptableObject);
-        TankController tankController = new TankController(TankView, tankModel, randomSpawnPos, Quaternion.identity);
+        //TankController tankController = new TankController(TankView, tankModel, randomSpawnPos, Quaternion.identity);
+        TankController tankController = serviceTank.GetTank(tankModel, TankView, randomSpawnPos, Quaternion.identity);
         return tankController;
     }
     public TankController CreateEnemyTank(TankScriptableObject tankScriptableObject)
     {
         randomSpawnPos = new Vector3(Random.Range(-42, 43), 0, Random.Range(39, -43));
         TankModel tankModel = new TankModel(tankScriptableObject);
-        TankController tankController = new TankController(Enemy, tankModel, randomSpawnPos, Quaternion.identity);
+        //TankController tankController = new TankController(Enemy, tankModel, randomSpawnPos, Quaternion.identity);
+        TankController tankController = serviceTank.GetEnemy(tankModel, Enemy, randomSpawnPos, Quaternion.identity);
         return tankController;
 
     }

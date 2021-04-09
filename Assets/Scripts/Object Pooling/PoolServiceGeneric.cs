@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PoolServiceGeneric<T> : MonoSingletonGeneric<PoolServiceGeneric<T>> where T : class
 {
-    private List<PooledItem<T>> pooledItems;
+    private List<PooledItem<T>> pooledItems = new List<PooledItem<T>>();
 
     public virtual T GetItem()
     {
@@ -26,6 +26,7 @@ public class PoolServiceGeneric<T> : MonoSingletonGeneric<PoolServiceGeneric<T>>
         pooledItem.Item = CreateItem();
         pooledItem.IsUsed = true;
         pooledItems.Add(pooledItem);
+        Debug.Log("New item added to pool: " + pooledItems.Count);
         return pooledItem.Item;
     }
 
@@ -36,9 +37,9 @@ public class PoolServiceGeneric<T> : MonoSingletonGeneric<PoolServiceGeneric<T>>
 
     public virtual void ReturnItem(T item)
     {
-        PooledItem<T> pooledItem = pooledItems.Find(i => i.Item.Equals(item));
+        PooledItem<T> pooledItem = pooledItems.Find(i => i.Item == item);
         pooledItem.IsUsed = false;
-
+        Debug.Log("Returning to pool");
     }
 }
 
