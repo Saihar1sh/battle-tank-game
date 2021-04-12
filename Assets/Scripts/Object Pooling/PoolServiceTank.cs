@@ -28,20 +28,10 @@ public class PoolServiceTank : PoolServiceGeneric<TankController>
     }
     protected override TankController CreateItem()
     {
-        if (playerNeeded)
-        {
-            playerNeeded = false;
-            TankController tankController = new TankController(tankPrefab, tankModel, Vector3.zero, Quaternion.identity);
-            return tankController;
-        }
-        if (enemyNeeded)
-        {
-            enemyNeeded = false;
-            TankController tankController = new TankController(enemyPrefab, tankModel, Vector3.zero, Quaternion.identity);
-            return tankController;
-        }
-
-        return null;
+        TankController tankController = new TankController(tankPrefab, tankModel, Vector3.zero, Quaternion.identity);
+        return tankController;
     }
+
+
 
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletController : MonoBehaviour
@@ -38,6 +40,7 @@ public class BulletController : MonoBehaviour
     {
         meshRenderer.enabled = true;
         bulletRB.AddForce(transform.forward * bulletSpeed);
+        StartCoroutine(ReturnToPool());
     }
     private void Update()
     {
@@ -65,6 +68,11 @@ public class BulletController : MonoBehaviour
         Particles.Instance.CommenceShellExplosion(transform);
     }
 
+    IEnumerator ReturnToPool()
+    {
+        yield return new WaitForSeconds(2f);
+        PoolServiceBullet.Instance.ReturnItem(this);
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -87,9 +95,7 @@ public class BulletController : MonoBehaviour
             if (fireAmmo)
                 Destroy(collision.gameObject);
 
-            Destroy(gameObject);
         }
-        //meshRenderer.enabled = false;
         gameObject.SetActive(false);
     }
     #region damage radius develop later

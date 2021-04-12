@@ -9,6 +9,7 @@ public class TankService : MonoSingletonGeneric<TankService>
     public GameObject BustedTankPrefab;
     public TankScriptableObjectList tankList;
     public PoolServiceTank serviceTank;
+    public PoolEnemyService enemyService;
 
     private Vector3 randomSpawnPos;
 
@@ -86,7 +87,7 @@ public class TankService : MonoSingletonGeneric<TankService>
         randomSpawnPos = new Vector3(Random.Range(-42, 43), 0, Random.Range(39, -43));
         TankModel tankModel = new TankModel(tankScriptableObject);
         //TankController tankController = new TankController(Enemy, tankModel, randomSpawnPos, Quaternion.identity);
-        TankController tankController = serviceTank.GetEnemy(tankModel, Enemy, randomSpawnPos, Quaternion.identity);
+        TankController tankController = enemyService.GetEnemy(tankModel, Enemy, randomSpawnPos, Quaternion.identity);
         return tankController;
 
     }

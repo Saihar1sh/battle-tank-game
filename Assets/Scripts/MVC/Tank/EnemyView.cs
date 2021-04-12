@@ -68,7 +68,7 @@ public class EnemyView : MonoBehaviour, IDamagable
     public void Shoot()
     {
         //Debug.Log("shoot");
-        BulletService.Instance.InstantiateBullet(tankShootPos);
+        BulletService.Instance.GetBullet(tankShootPos);
     }
 
     public void AddDetails()
@@ -98,7 +98,7 @@ public class EnemyView : MonoBehaviour, IDamagable
         Particles.Instance.CommenceTankExplosion(transform);
         gameObject.SetActive(false);
         TankService.Instance.SpawnBustedTank(transform);
-        PoolServiceTank.Instance.ReturnItem(tankController);
+        PoolEnemyService.Instance.ReturnItem(tankController);
         TankService.Instance.IncreamentEnemyDeathCounter();
         TankService.Instance.enemyTanks.Remove(this);
         ServiceEvents.Instance.OnEnemyDeathInvoke();

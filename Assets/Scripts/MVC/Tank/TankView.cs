@@ -132,7 +132,7 @@ public class TankView : MonoBehaviour, IDamagable
             return;
         }
         else
-            BulletService.Instance.InstantiateBullet(tankShootPos);
+            BulletService.Instance.GetBullet(tankShootPos);
     }
 
     public void ModifyHealth(float amount)

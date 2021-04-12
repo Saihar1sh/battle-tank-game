@@ -11,10 +11,13 @@ public class PoolServiceBullet : PoolServiceGeneric<BulletController>
     {
         return CreateItem();
     }
-    /*    protected override BulletController CreateItem()
-        {
-           BulletController bulletController = new BulletController(bulletScriptableObject, bullet, Vector3.zero, Quaternion.identity);
-            return bulletController;
-        }
-    */
+
+    protected override BulletController CreateItem()
+    {
+        Transform transfor = transform;
+        transfor.position = Vector3.zero;
+        transfor.rotation = Quaternion.identity;
+        BulletController bulletController = BulletService.Instance.InstantiateBullet(transfor);
+        return bulletController;
+    }
 }

@@ -10,23 +10,30 @@ public class BulletService : MonoSingletonGeneric<BulletService>
 
     public bool fireAmmoBool;
 
+    private Transform transForm;
     public int bulletsFired { get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
     }
-    public void InstantiateBullet(Transform t)
+    public void GetBullet(Transform t)
     {
-        //Instantiate(BulletPrefab, transform.position, transform.rotation);
-        //poolEnum = PoolEnum.Bullets;
-        //ObjectPool.Instance.SpawnFromPool(PoolEnum.Bullets, t.position, t.rotation);
-        bulletsFired++;
+        transForm = t;
+        PoolServiceBullet.Instance.GetItem();
     }
-    public void InstantiateFireBullet(Transform transform)
+    public BulletController InstantiateBullet(Transform t)
     {
-        Instantiate(FireBulletPrefab, transform.position, transform.rotation);
+        BulletController bulletController = Instantiate(BulletPrefab, transForm.position, transForm.rotation);
         bulletsFired++;
+        return bulletController;
+
+    }
+    public BulletController InstantiateFireBullet(Transform transform)
+    {
+        BulletController bulletController = Instantiate(FireBulletPrefab, transform.position, transform.rotation);
+        bulletsFired++;
+        return bulletController;
     }
 
     public void SetBulletsFired(int i)
