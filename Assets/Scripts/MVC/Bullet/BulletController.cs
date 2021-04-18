@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletController : MonoBehaviour
@@ -10,37 +8,20 @@ public class BulletController : MonoBehaviour
     public float maxLifetime = 2f, bulletSpeed = 20f, damage = 10f;
 
     private MeshRenderer meshRenderer;
-    /*    private BulletScriptableObject bulletScriptableObject;
-        private BulletController bullet;
-        private Vector3 zero;
-        private Quaternion identity;
 
-        public BulletController(BulletScriptableObject bulletScriptableObject, BulletController bullet, Vector3 zero, Quaternion identity)
-        {
-            this.bulletScriptableObject = bulletScriptableObject;
-            this.bullet = bullet;
-            this.zero = zero;
-            this.identity = identity;
-        }
-
-        //private Particles ParticlesInstance;
-    */
+    //private Particles ParticlesInstance;
     private void Awake()
     {
         bulletRB = GetComponent<Rigidbody>();
         meshRenderer = gameObject.GetComponent<MeshRenderer>();
-
+        Destroy(gameObject, maxLifetime);
     }
     // Start is called before the first frame update
-    void Start()
-    {
-        //ParticlesInstance = (Particles) Particles.GetInstance();
-    }
     private void OnEnable()
     {
+        bulletRB.velocity = Vector3.zero;
         meshRenderer.enabled = true;
         bulletRB.AddForce(transform.forward * bulletSpeed);
-        StartCoroutine(ReturnToPool());
     }
     private void Update()
     {
@@ -68,11 +49,6 @@ public class BulletController : MonoBehaviour
         Particles.Instance.CommenceShellExplosion(transform);
     }
 
-    IEnumerator ReturnToPool()
-    {
-        yield return new WaitForSeconds(2f);
-        PoolServiceBullet.Instance.ReturnItem(this);
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -96,6 +72,8 @@ public class BulletController : MonoBehaviour
                 Destroy(collision.gameObject);
 
         }
+        PoolService.Destroy(gameObject);
+        //meshRenderer.enabled = false;
         gameObject.SetActive(false);
     }
     #region damage radius develop later

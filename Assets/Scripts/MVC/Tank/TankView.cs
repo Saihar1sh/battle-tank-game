@@ -40,13 +40,18 @@ public class TankView : MonoBehaviour, IDamagable
         shootJoystick = FindObjectOfType<FloatingJoystick>();
         healthBar = GetComponentInChildren<HealthBar>();
     }
-    private void Start()
+    private void OnEnable()
     {
         //initialsing
         tankController = new TankController(this);
         TankService.Instance.tanks.Add(this);
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+        Debug.Log("Start");
+
+    }
+    private void Start()
+    {
     }
 
     private void Update()
@@ -132,7 +137,7 @@ public class TankView : MonoBehaviour, IDamagable
             return;
         }
         else
-            BulletService.Instance.GetBullet(tankShootPos);
+            BulletService.Instance.InstantiateBullet(tankShootPos);
     }
 
     public void ModifyHealth(float amount)
@@ -160,7 +165,7 @@ public class TankView : MonoBehaviour, IDamagable
         ServiceEvents.Instance.OnPlayerDeathInVoke();
         StartCoroutine(TankExplosionDelay());
         gameObject.SetActive(false);
-        PoolServiceTank.Instance.ReturnItem(tankController);
+        PoolService.Destroy(gameObject);
     }
     IEnumerator ShootBulletDelay(float secs)
     {

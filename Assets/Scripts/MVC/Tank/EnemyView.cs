@@ -14,7 +14,6 @@ public class EnemyView : MonoBehaviour, IDamagable
     public Renderer[] renderers;
 
     private Color tankColor;
-    private TankController tankController;
 
     private HealthBar HealthBar;
     private TankModel redTankModel;
@@ -32,27 +31,18 @@ public class EnemyView : MonoBehaviour, IDamagable
         meshAgent = GetComponent<NavMeshAgent>();
 
     }
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        //initialing values
-        tankController = new TankController(this);
         AddDetails();
         currentHealth = maxHealth;
         HealthBar.SetMaxHealth(maxHealth);
-    }
 
+    }
     // Update is called once per frame
     void Update()
     {
         CheckHealth();
-        //meshAgent.SetDestination(transform.position + transform.forward * 4f);
         Debug.Log("Enemy Id: " + Id, gameObject);
-    }
-
-    public void GetControllerTank(TankController _tankController)
-    {
-        this.tankController = _tankController;
     }
 
     private void CheckHealth()
@@ -68,7 +58,7 @@ public class EnemyView : MonoBehaviour, IDamagable
     public void Shoot()
     {
         //Debug.Log("shoot");
-        BulletService.Instance.GetBullet(tankShootPos);
+        BulletService.Instance.InstantiateBullet(tankShootPos);
     }
 
     public void AddDetails()
@@ -98,10 +88,10 @@ public class EnemyView : MonoBehaviour, IDamagable
         Particles.Instance.CommenceTankExplosion(transform);
         gameObject.SetActive(false);
         TankService.Instance.SpawnBustedTank(transform);
-        PoolEnemyService.Instance.ReturnItem(tankController);
         TankService.Instance.IncreamentEnemyDeathCounter();
         TankService.Instance.enemyTanks.Remove(this);
         ServiceEvents.Instance.OnEnemyDeathInvoke();
+        PoolService.Destroy(gameObject);
     }
     public void ShootDelay(float secs)
     {

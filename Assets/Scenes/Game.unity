@@ -567,52 +567,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &113199087
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 113199089}
-  - component: {fileID: 113199088}
-  m_Layer: 0
-  m_Name: PoolService
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &113199088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 113199087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0c60b261f664434488fa73826229360, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletScriptableObject: {fileID: 11400000, guid: ebe21dff66e482640ba6918ac8b233b2,
-    type: 2}
-  bullet: {fileID: 7571786955931081407, guid: d122eceef9e19da41a64d2994519afc8, type: 3}
---- !u!4 &113199089
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 113199087}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45.198116, y: 1.205819, z: -15.899143}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &137090512
 GameObject:
   m_ObjectHideFlags: 0
@@ -1729,49 +1683,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8107092469481723205}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &416174731
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 416174733}
-  - component: {fileID: 416174732}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &416174732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 416174731}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a18c1dc545aaaed408a30ee2a3382416, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &416174733
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 416174731}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.1809535, y: 1.2058411, z: 2.127851}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 14
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &448363786 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1263282706569076, guid: 0aac6aef14f064c3fb626270cff2683b,
@@ -2652,8 +2563,6 @@ MonoBehaviour:
   BustedTankPrefab: {fileID: 7850571183158543106, guid: aa2ca9513b6b5c2448ddfab5cbd5a6aa,
     type: 3}
   tankList: {fileID: 11400000, guid: 060c970ce9ab6e348935609c9b74c98a, type: 2}
-  serviceTank: {fileID: 416174732}
-  enemyService: {fileID: 0}
   tanks: []
   enemyTanks: []
   environment: []
