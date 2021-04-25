@@ -12,7 +12,7 @@ public class HealthPickup : MonoBehaviour
             {
                 TankView tankView = other.gameObject.GetComponent<TankView>();
                 tankView.ModifyHealth(+incrementHealthAmt);
-                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                gameObject.SetActive(false);
 
             }
         }

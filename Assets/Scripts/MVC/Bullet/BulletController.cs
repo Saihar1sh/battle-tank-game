@@ -70,10 +70,9 @@ public class BulletController : MonoBehaviour
         {
             if (fireAmmo)
                 Destroy(collision.gameObject);
+            Destroy(gameObject);
 
         }
-        PoolService.Destroy(gameObject);
-        //meshRenderer.enabled = false;
         gameObject.SetActive(false);
     }
     #region damage radius develop later

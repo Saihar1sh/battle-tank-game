@@ -68,20 +68,20 @@ public class TankService : MonoSingletonGeneric<TankService>
     {
         int i = Random.Range(1, tankList.tanks.Length);
         CreateTank(tankList.tanks[i]);
-        Debug.Log("Creating Tank");
+
 
     }
 
     public TankController CreateTank(TankScriptableObject tankScriptableObject)
     {
-        randomSpawnPos = new Vector3(Random.Range(-42, 43), 0, Random.Range(39, -43));
+        randomSpawnPos = new Vector3(Random.Range(-42, 43), 2, Random.Range(39, -43));
         TankModel tankModel = new TankModel(tankScriptableObject);
         TankController tankController = new TankController(TankView, tankModel, randomSpawnPos, Quaternion.identity);
         return tankController;
     }
     public TankController CreateEnemyTank(TankScriptableObject tankScriptableObject)
     {
-        randomSpawnPos = new Vector3(Random.Range(-42, 43), 0, Random.Range(39, -43));
+        randomSpawnPos = new Vector3(Random.Range(-42, 43), 2, Random.Range(39, -43));
         TankModel tankModel = new TankModel(tankScriptableObject);
         TankController tankController = new TankController(Enemy, tankModel, randomSpawnPos, Quaternion.identity);
         Enemy.Id = Id;

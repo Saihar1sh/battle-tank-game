@@ -41,7 +41,7 @@ public class PickupService : MonoSingletonGeneric<PickupService>
 
         for (int i = 0; i < pickups.Length; i++)
         {
-            if(pickups[i].GetComponent<SpriteRenderer>() != null)
+            if (pickups[i].GetComponent<SpriteRenderer>() != null)
             {
                 pickups[i].GetComponent<SpriteRenderer>().enabled = true;
             }
@@ -58,17 +58,15 @@ public class PickupService : MonoSingletonGeneric<PickupService>
     // Update is called once per frame
     void Update()
     {
-        
+
         timeCheck += 1 * Time.deltaTime;
-       // Debug.Log("timeCheck : " + timeCheck);
         if (timeCheck >= 15f)
         {
-            Debug.Log("15 up");
             Vector3 randomSpawnPos = new Vector3(Random.Range(-38, 38), 0, Random.Range(38, -38));
 
             int randval = Random.Range(0, pickups.Length);
-            pickups[randval].transform.position = randomSpawnPos; 
-            if(meshIndex == randval)
+            pickups[randval].transform.position = randomSpawnPos;
+            if (meshIndex == randval)
                 pickups[meshIndex].GetComponent<MeshRenderer>().enabled = true;
             else
                 pickups[randval].GetComponent<SpriteRenderer>().enabled = true;

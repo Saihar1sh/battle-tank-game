@@ -31,7 +31,6 @@ public class TankView : MonoBehaviour, IDamagable
     private HealthBar healthBar;
 
 
-
     private void Awake()
     {
         //referencing
@@ -47,7 +46,6 @@ public class TankView : MonoBehaviour, IDamagable
         TankService.Instance.tanks.Add(this);
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
-        Debug.Log("Start");
 
     }
     private void Start()
@@ -163,10 +161,13 @@ public class TankView : MonoBehaviour, IDamagable
         Particles.Instance.CommenceTankExplosion(transform);
         TankService.Instance.SpawnBustedTank(transform);
         ServiceEvents.Instance.OnPlayerDeathInVoke();
-        StartCoroutine(TankExplosionDelay());
         gameObject.SetActive(false);
+        TankService.Instance.tanks.Remove(this);
         PoolService.Destroy(gameObject);
+
     }
+
+    //Coroutines
     IEnumerator ShootBulletDelay(float secs)
     {
         canShoot = false;
@@ -175,10 +176,4 @@ public class TankView : MonoBehaviour, IDamagable
         canShoot = true;
     }
 
-    IEnumerator TankExplosionDelay()
-    {
-        yield return new WaitForSeconds(tankExplosionDelay);
-        TankService.Instance.tanks.Remove(this);
-        Destroy(gameObject);
-    }
 }

@@ -27,6 +27,7 @@ public class BulletService : MonoSingletonGeneric<BulletService>
         bulletsFired++;
     }
 
+
     public void SetBulletsFired(int i)
     {
         bulletsFired = i;

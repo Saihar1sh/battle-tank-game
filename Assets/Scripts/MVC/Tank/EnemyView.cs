@@ -51,6 +51,10 @@ public class EnemyView : MonoBehaviour, IDamagable
             DestroyEnemyTank();
     }
 
+    public Transform GetTransform()
+    {
+        return tankTurret.transform;
+    }
     public void MoveTurret(Transform player)
     {
         tankTurret.transform.LookAt(player);

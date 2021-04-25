@@ -120,6 +120,9 @@ public class UIManager : MonoSingletonGeneric<UIManager>
         score += scoreIncrement;
         text.text = "" + score;
     }
+
+    //Coroutines
+
     IEnumerator ImageUIVisiblePeriod(Image image)
     {
         GameObject gameObject = image.gameObject;
