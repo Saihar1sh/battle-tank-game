@@ -6,23 +6,24 @@ public class RampageCube : MonoBehaviour
     private bool rapidAmmoBool = true;
 
     public float rampageTime = 10f;
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             if (other.gameObject.GetComponent<TankView>() != null)
             {
+                UIManager.Instance.RampageMode();
                 TankView tankView = other.gameObject.GetComponent<TankView>();
                 if (rapidAmmoBool)
-                    StartCoroutine(RapidAmmoTime(tankView, rampageTime));
-                gameObject.GetComponent<MeshRenderer>().enabled = false;
+                    StartCoroutine(RapidFireAmmoTime(tankView, rampageTime));
+                gameObject.SetActive(false);
 
             }
         }
 
     }
-    IEnumerator RapidAmmoTime(TankView tankView, float timePeriod)
+    IEnumerator RapidFireAmmoTime(TankView tankView, float timePeriod)
     {
         rapidAmmoBool = false;
         float delay = tankView.shootDelay;

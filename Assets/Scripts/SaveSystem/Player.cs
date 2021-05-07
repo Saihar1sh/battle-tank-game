@@ -12,11 +12,11 @@ public class Player : MonoBehaviour
 
     private TankView tank;
 
-    private void Start()
+    private void OnEnable()
     {
         tank = GetComponent<TankView>();
-    }
 
+    }
     private void Update()
     {
         enemiesKilled = TankService.Instance.enemiesDestroyed;
@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
 
     public void SaveGame()
     {
+        OnEnable();
         SaveSystem.SavePlayer(this);
     }
 

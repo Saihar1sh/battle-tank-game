@@ -30,6 +30,7 @@ public class TankView : MonoBehaviour, IDamagable
     private TankController tankController;
     private HealthBar healthBar;
 
+    private bool godMode = false;
 
     private void Awake()
     {
@@ -46,7 +47,12 @@ public class TankView : MonoBehaviour, IDamagable
         TankService.Instance.tanks.Add(this);
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+        UIManager.Instance.InstantiatePlayerRef(gameObject);
 
+    }
+    private void OnDisable()
+    {
+        TankService.Instance.tanks.Remove(this);
     }
     private void Start()
     {
@@ -140,7 +146,8 @@ public class TankView : MonoBehaviour, IDamagable
 
     public void ModifyHealth(float amount)
     {
-        //currentHealth += amount;      //-----------------------
+        if (godMode == false)
+            currentHealth += amount;      //-----------------------
         healthBar.SetHealth(currentHealth);
     }
     private void CheckHealth()
@@ -156,6 +163,19 @@ public class TankView : MonoBehaviour, IDamagable
     {
         return currentHealth;
     }
+    public void PlayerCheatModeActivate()
+    {
+        godMode = true;
+        shootDelay = 0;
+        BulletService.Instance.fireAmmoBool = true;
+    }
+    public void PlayerCheatModeDisabled()
+    {
+        godMode = false;
+        shootDelay = 1;
+        BulletService.Instance.fireAmmoBool = false;
+    }
+
     public void DestroyTank()
     {
         Particles.Instance.CommenceTankExplosion(transform);
@@ -175,5 +195,6 @@ public class TankView : MonoBehaviour, IDamagable
         yield return new WaitForSeconds(secs);
         canShoot = true;
     }
+
 
 }

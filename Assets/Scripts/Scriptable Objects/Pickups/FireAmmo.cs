@@ -8,10 +8,9 @@ public class FireAmmo : MonoBehaviour
         {
             if (other.gameObject.GetComponent<TankView>() != null)
             {
-/*                TankView tankView = other.gameObject.GetComponent<TankView>();
-                tankView.fireBulletBool = true;
-*/              BulletService.Instance.fireAmmoBool = true;
-                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                BulletService.Instance.fireAmmoBool = true;
+                UIManager.Instance.FireAmmoMode();
+                gameObject.SetActive(false);
             }
         }
 

@@ -10,6 +10,7 @@ public class HealthPickup : MonoBehaviour
         {
             if (other.gameObject.GetComponent<TankView>() != null)
             {
+                UIManager.Instance.HealthMode();
                 TankView tankView = other.gameObject.GetComponent<TankView>();
                 tankView.ModifyHealth(+incrementHealthAmt);
                 gameObject.SetActive(false);
