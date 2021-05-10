@@ -9,8 +9,8 @@ public class TankView : MonoBehaviour, IDamagable
     public float mvtSpeed, rotatingSpeed, maxHealth, tankExplosionDelay = 1f;
     [Tooltip("Reloading Time")]
     public float shootDelay = 1f;
-    //private Vector3 rotation;
-    public float currentHealth;
+    [SerializeField]
+    private float currentHealth;
     private bool touchInput = true, KeyboardInput = true;
     private bool canShoot = true;
 
@@ -48,7 +48,6 @@ public class TankView : MonoBehaviour, IDamagable
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         UIManager.Instance.InstantiatePlayerRef(gameObject);
-
     }
     private void OnDisable()
     {
@@ -178,6 +177,7 @@ public class TankView : MonoBehaviour, IDamagable
 
     public void DestroyTank()
     {
+        UIManager.Instance.playerDead = true;
         Particles.Instance.CommenceTankExplosion(transform);
         TankService.Instance.SpawnBustedTank(transform);
         ServiceEvents.Instance.OnPlayerDeathInVoke();

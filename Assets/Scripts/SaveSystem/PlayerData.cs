@@ -18,6 +18,7 @@ public class PlayerData
         enemiesKilled = _player.enemiesKilled;
         shellsFired = _player.bulletsFired;
         playerHealth = _player.currentHealth;
+        waveNo = _player.waveNo;
 
         position = new float[3];
         position[0] = _player.transform.position.x;

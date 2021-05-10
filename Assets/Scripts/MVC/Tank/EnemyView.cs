@@ -9,7 +9,7 @@ public class EnemyView : MonoBehaviour, IDamagable
     public float mvtSpeed, rotatingSpeed, maxHealth = 200;
 
     private float currentHealth;
-    private bool canShoot = true;
+    private bool canShoot;
     //coloring---------------------------------
     public Renderer[] renderers;
 
@@ -36,6 +36,7 @@ public class EnemyView : MonoBehaviour, IDamagable
         AddDetails();
         currentHealth = maxHealth;
         HealthBar.SetMaxHealth(maxHealth);
+        canShoot = true;
 
     }
     // Update is called once per frame

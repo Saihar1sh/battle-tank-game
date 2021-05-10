@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -15,10 +14,10 @@ public class UIManager : MonoSingletonGeneric<UIManager>
     public int scoreIncrement = 10;
 
     [SerializeField]
-    private Image waveStartImage, AcheivementImage, PauseImage, PickupImage;
+    private Image waveStartImage, AcheivementImage, PauseImage, PickupImage, retryMenuImage;
 
     [SerializeField]
-    private Button pauseBtn, saveBtn, loadBtn, cheatModeBtn, startMenuBtn, exitBtn;
+    private Button pauseBtn, saveBtn, loadBtn, cheatModeBtn, startMenuBtn, exitBtn, retryBtn, loadBtn2, startMenuBtn2, exitBtn2;
 
     [SerializeField]
     private TextMeshProUGUI AcheivementTxt, AcheivementTitle, WaveTxt, WaveNoTxt, pickupLines;
@@ -28,23 +27,40 @@ public class UIManager : MonoSingletonGeneric<UIManager>
     private Player player;
     private TankView tankView;
 
-    private bool playerGodMode = false;
+    [SerializeField]
+    private GameObject miniMapCanvas;
 
-    void Start()
+    public bool playerGodMode { get; private set; } = false;
+    public bool playerDead = false;
+
+    protected override void Awake()
     {
-
-        AcheivementImage.gameObject.SetActive(false);
-        waveStartImage.gameObject.SetActive(false);
-        PauseImage.gameObject.SetActive(false);
-        PickupImage.gameObject.SetActive(false);
-
+        base.Awake();
+        //input UI
+        cheatModeBtn.onClick.AddListener(CheatMode);
         pauseBtn.onClick.AddListener(PauseMenuEnable);
+        //pause UI
         saveBtn.onClick.AddListener(SaveGame);
         loadBtn.onClick.AddListener(LoadGame);
         startMenuBtn.onClick.AddListener(LoadStartMenu);
         exitBtn.onClick.AddListener(ExitGame);
+        //retry UI
+        retryBtn.onClick.AddListener(RetryGame);
+        loadBtn.onClick.AddListener(LoadGame);
+        startMenuBtn.onClick.AddListener(LoadStartMenu);
+        exitBtn.onClick.AddListener(ExitGame);
 
-        cheatModeBtn.onClick.AddListener(CheatMode);
+    }
+
+    void Start()
+    {
+        Time.timeScale = 1;
+        miniMapCanvas.SetActive(true);
+        AcheivementImage.gameObject.SetActive(false);
+        waveStartImage.gameObject.SetActive(false);
+        PauseImage.gameObject.SetActive(false);
+        PickupImage.gameObject.SetActive(false);
+        retryMenuImage.gameObject.SetActive(false);
 
         ServiceEvents.Instance.OnEnemyDeath += ScoreIncreament;
         ServiceEvents.Instance.OnEnemiesDestroyed += EnemiesDestroyedAchievements;
@@ -55,13 +71,6 @@ public class UIManager : MonoSingletonGeneric<UIManager>
 
 
     }
-
-    public void InstantiatePlayerRef(GameObject playerGO)
-    {
-        tankView = playerGO.GetComponent<TankView>();
-        player = playerGO.GetComponent<Player>();
-    }
-
     private void Update()
     {
         waveStart = TankService.Instance.waveStarted;
@@ -69,6 +78,25 @@ public class UIManager : MonoSingletonGeneric<UIManager>
 
         if (Input.GetKeyDown(KeyCode.P))
             PauseMenuEnable();
+
+        if (playerDead)
+        {
+            StartCoroutine(ImageDelayAppear(retryMenuImage, 3f));
+            miniMapCanvas.SetActive(false);
+            Time.timeScale = 0;
+        }
+    }
+
+    public void InstantiatePlayerRef(GameObject playerGO)
+    {
+        tankView = playerGO.GetComponent<TankView>();
+        player = playerGO.GetComponent<Player>();
+    }
+
+
+    private void RetryGame()
+    {
+        TankService.Instance.CreatePlayerTank();
     }
 
     private void LoadStartMenu()
@@ -110,13 +138,13 @@ public class UIManager : MonoSingletonGeneric<UIManager>
         int timescale = pauseMenuEnable ? 1 : 0;
         Time.timeScale = timescale;
     }
-    private void RampagePickup()
+    private void RampagePickupAchievement()
     {
 
         AcheivementTitle.text = "You are fired!!!!";
         AcheivementTxt.text = "Rampages picked : ";
     }
-    private void RapidAmmoPickup()
+    private void RapidAmmoPickupAchievement()
     {
         AcheivementTitle.text = "Hell Fire!!!!!!";
         AcheivementTxt.text = "Rapid Ammos picked : ";
@@ -135,8 +163,9 @@ public class UIManager : MonoSingletonGeneric<UIManager>
     {
         if (waveStart)
         {
-            WaveTxt.text = "Wave " + TankService.Instance.waves + " Completed.";
-            WaveNoTxt.text = "Wave No. " + TankService.Instance.waves;
+            int _nextWaveNo = TankService.Instance.waves;
+            WaveTxt.text = "Wave " + (_nextWaveNo - 1) + " Completed.";
+            WaveNoTxt.text = "Wave No. " + _nextWaveNo;
         }
         waveStartImage.gameObject.SetActive(waveStart);
     }
@@ -216,4 +245,10 @@ public class UIManager : MonoSingletonGeneric<UIManager>
         ImageUIVisible = true;
     }
 
+    IEnumerator ImageDelayAppear(Image image, float time)
+    {
+        playerDead = false;
+        yield return new WaitForSeconds(time);
+        image.gameObject.SetActive(true);
+    }
 }

@@ -17,7 +17,7 @@ public class TankService : MonoSingletonGeneric<TankService>
 
     private int Id = 0;
     private int enemyTanksIncreament = 5;
-    public int waves { get; private set; } = 1;
+    public int waves { get; private set; } = 2;                 //we only take this data after 1 wave
 
     public bool waveStarted = false, firstWave = true;
 
@@ -52,7 +52,6 @@ public class TankService : MonoSingletonGeneric<TankService>
         {
             CreateEnemyTank(tankList.tanks[0]);
             Debug.Log("Creating EnemyTank");
-
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad1))
@@ -68,8 +67,6 @@ public class TankService : MonoSingletonGeneric<TankService>
     {
         int i = Random.Range(1, tankList.tanks.Length);
         CreateTank(tankList.tanks[i]);
-
-
     }
 
     public TankController CreateTank(TankScriptableObject tankScriptableObject)
@@ -96,6 +93,64 @@ public class TankService : MonoSingletonGeneric<TankService>
         if (bustedTankDelaying)
             StartCoroutine(GameobjectDestroyDelay(bustedTank, 2f));
     }
+    public void DestroyEnemies()
+    {
+        StartCoroutine(DestroyEnemyDelay());
+    }
+
+    public void IncreamentEnemyDeathCounter()
+    {
+        enemiesDestroyed++;
+    }
+    public void SetEnemiesDestroyedCount(int h)
+    {
+        enemiesDestroyed = h;
+
+    }
+    public void EnemyWaves()
+    {
+        if (enemyTanks.Count == 0 && waveStarted == false)
+        {
+            StartCoroutine(WaveDelay(5));
+        }
+    }
+
+    private void WaveStart()
+    {
+        for (int i = 0; i < enemyTanksIncreament; i++)
+        {
+            //TankScriptableObject enemyTanker = tankList.tanks[0];
+            CreateEnemyTank(tankList.tanks[0]);
+        }
+        waves++;
+        enemyTanksIncreament += 3;
+        Debug.Log("Wave :> " + waves);
+    }
+
+    private void PlayerDeathsCounterIncreament()
+    {
+        playersDestroyed++;
+    }
+    public void SetCurrentWave(int num)
+    {
+        waves = num;
+    }
+    /*    private void OnDestroy()
+        {
+            Debug.Log("Commencing Clean Slate Protocol.................");
+            DestroyEnemies()
+        }
+    */
+
+    //coroutines
+    IEnumerator WaveDelay(float _secs)
+    {
+        waveStarted = true;
+        yield return new WaitForSeconds(_secs);
+        WaveStart();
+        waveStarted = false;
+
+    }
     IEnumerator GameobjectDestroyDelay(GameObject _gameObject, float secs)
     {
         bustedTankDelaying = false;
@@ -103,6 +158,18 @@ public class TankService : MonoSingletonGeneric<TankService>
         PoolService.Destroy(_gameObject);
         bustedTankDelaying = true;
     }
+    IEnumerator DestroyEnemyDelay()
+    {
+        while (enemyTanks.Count != 0)
+        {
+            Destroy(enemyTanks[0].gameObject);
+            enemyTanks.RemoveAt(0);
+            yield return new WaitForSeconds(.5f);
+        }
+        //StartCoroutine(DestroyEnvironmentDelay());
+
+    }
+
     #region DestroyEverthing
     /*    public void DestroyEverything()
         {
@@ -136,71 +203,4 @@ public class TankService : MonoSingletonGeneric<TankService>
     }
     */
     #endregion
-    public void DestroyEnemies()
-    {
-        StartCoroutine(DestroyEnemyDelay());
-    }
-
-    private IEnumerator DestroyEnemyDelay()
-    {
-        while (enemyTanks.Count != 0)
-        {
-            Destroy(enemyTanks[0].gameObject);
-            enemyTanks.RemoveAt(0);
-            yield return new WaitForSeconds(.5f);
-        }
-        //StartCoroutine(DestroyEnvironmentDelay());
-
-    }
-    public void IncreamentEnemyDeathCounter()
-    {
-        enemiesDestroyed++;
-    }
-    public void SetEnemiesDestroyedCount(int h)
-    {
-        enemiesDestroyed = h;
-
-    }
-    public void EnemyWaves()
-    {
-        if (enemyTanks.Count == 0 && waveStarted == false)
-        {
-            StartCoroutine(WaveDelay(5));
-        }
-    }
-
-    private void WaveStart()
-    {
-        for (int i = 0; i < enemyTanksIncreament; i++)
-        {
-            //TankScriptableObject enemyTanker = tankList.tanks[0];
-            CreateEnemyTank(tankList.tanks[0]);
-        }
-        waves++;
-        enemyTanksIncreament += 3;
-        Debug.Log("Wave :> " + waves);
-    }
-
-    IEnumerator WaveDelay(float _secs)
-    {
-        waveStarted = true;
-        yield return new WaitForSeconds(_secs);
-        WaveStart();
-        waveStarted = false;
-
-    }
-    private void PlayerDeathsCounterIncreament()
-    {
-        playersDestroyed++;
-    }
-    public void SetCurrentWave(int num)
-    {
-        waves = num;
-    }
-    /*    private void OnDestroy()
-        {
-            Debug.Log("Commencing Clean Slate Protocol.................");
-            DestroyEnemies()
-        }
-    */
 }
