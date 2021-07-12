@@ -5,7 +5,8 @@ using UnityEngine;
 public class BulletService : MonoSingletonGeneric<BulletService>
 {
     [SerializeField]
-    private BulletController BulletPrefab,  FireBulletPrefab;
+    private BulletController BulletPrefab, FireBulletPrefab;
+
 
     public bool fireAmmoBool;
 
@@ -15,18 +16,19 @@ public class BulletService : MonoSingletonGeneric<BulletService>
     {
         base.Awake();
     }
-    public void InstantiateBullet(Transform transform)
+    public void InstantiateBullet(Transform t)
     {
-        Instantiate(BulletPrefab, transform.position, transform.rotation);
+        Instantiate(BulletPrefab.gameObject, t.position, t.rotation);
         bulletsFired++;
     }
-    public void InstantiateFireBullet(Transform transform)
+    public void InstantiateFireBullet(Transform t)
     {
-        Instantiate(FireBulletPrefab, transform.position, transform.rotation);
+        Instantiate(FireBulletPrefab.gameObject, t.position, t.rotation);
         bulletsFired++;
     }
 
-    public void SetBulletsFired(int i) 
+
+    public void SetBulletsFired(int i)
     {
         bulletsFired = i;
     }

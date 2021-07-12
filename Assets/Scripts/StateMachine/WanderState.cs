@@ -10,20 +10,20 @@ public class WanderState : EnemyStateMachine
     private Vector3 destination;
     public override void OnEnterState()
     {
-        Debug.Log(gameObject.name + " : Entered Wander State");
+
 
         base.OnEnterState();
         if (NeedsDestination())
         {
             GetDestination();
-            Debug.Log("getting dest");
+
         }
 
     }
     public override void OnExitState()
     {
         base.OnExitState();
-        Debug.Log(gameObject.name + " : Exiting Wander State");
+
 
     }
     private void GetDestination()

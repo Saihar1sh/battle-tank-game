@@ -8,7 +8,6 @@ public class AttackState : EnemyStateMachine
     public override void OnEnterState()
     {
         base.OnEnterState();
-        Debug.Log(gameObject.name + " : Entered Attack State");
         players = Physics.OverlapSphere(transform.position, attackingRange, player);
         if (players[0] != null)
             enemy.MoveTurret(players[0].transform);
@@ -18,7 +17,6 @@ public class AttackState : EnemyStateMachine
     public override void OnExitState()
     {
         base.OnExitState();
-        Debug.Log(gameObject.name + " : Exiting Attack State");
 
     }
 }

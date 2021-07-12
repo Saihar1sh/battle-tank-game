@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(EnemyView))] 
+[RequireComponent(typeof(EnemyView))]
 public class EnemyStateMachine : MonoBehaviour
 {
     protected EnemyView enemy;
     protected NavMeshAgent agent;
+
+    protected Transform defaultTransform;
 
     protected float chasingRange = 15f, attackingRange = 9f;
 
@@ -20,7 +22,7 @@ public class EnemyStateMachine : MonoBehaviour
     }
     private void Start()
     {
-
+        defaultTransform = enemy.GetTransform();
     }
     private void OnEnable()
     {
@@ -32,7 +34,7 @@ public class EnemyStateMachine : MonoBehaviour
     }
     private void Update()
     {
-        
+
     }
     public virtual void OnEnterState()
     {
@@ -42,5 +44,5 @@ public class EnemyStateMachine : MonoBehaviour
     {
         this.enabled = false;
     }
-    
+
 }

@@ -9,11 +9,12 @@ public class TankView : MonoBehaviour, IDamagable
     public float mvtSpeed, rotatingSpeed, maxHealth, tankExplosionDelay = 1f;
     [Tooltip("Reloading Time")]
     public float shootDelay = 1f;
-    //private Vector3 rotation;
+    [SerializeField]
     private float currentHealth;
     private bool touchInput = true, KeyboardInput = true;
     private bool canShoot = true;
 
+    [HideInInspector]
     public bool fireBulletBool = false;
 
     //coloring---------------------------------
@@ -29,7 +30,7 @@ public class TankView : MonoBehaviour, IDamagable
     private TankController tankController;
     private HealthBar healthBar;
 
-
+    private bool godMode = false;
 
     private void Awake()
     {
@@ -39,13 +40,21 @@ public class TankView : MonoBehaviour, IDamagable
         shootJoystick = FindObjectOfType<FloatingJoystick>();
         healthBar = GetComponentInChildren<HealthBar>();
     }
-    private void Start()
+    private void OnEnable()
     {
         //initialsing
         tankController = new TankController(this);
         TankService.Instance.tanks.Add(this);
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+        UIManager.Instance.InstantiatePlayerRef(gameObject);
+    }
+    private void OnDisable()
+    {
+        TankService.Instance.tanks.Remove(this);
+    }
+    private void Start()
+    {
     }
 
     private void Update()
@@ -64,14 +73,14 @@ public class TankView : MonoBehaviour, IDamagable
 
     public void GetTankController(TankController _tankController)
     {
-       this.tankController = _tankController;
+        this.tankController = _tankController;
     }
 
     private void CheckCanShoot()
     {
         if (canShoot)
         {
-            if (Mathf.Abs(shootJoystick.Direction.x) >= 0.7 || Mathf.Abs(shootJoystick.Direction.y) >= 0.7)
+            if (Mathf.Abs(shootJoystick.Direction.x) >= 0.7 || Mathf.Abs(shootJoystick.Direction.y) >= 0.7 && gameObject.activeInHierarchy)
             {
                 StartCoroutine(ShootBulletDelay(shootDelay));
             }
@@ -136,7 +145,8 @@ public class TankView : MonoBehaviour, IDamagable
 
     public void ModifyHealth(float amount)
     {
-        currentHealth += amount;
+        if (godMode == false)
+            currentHealth += amount;      //-----------------------
         healthBar.SetHealth(currentHealth);
     }
     private void CheckHealth()
@@ -152,13 +162,32 @@ public class TankView : MonoBehaviour, IDamagable
     {
         return currentHealth;
     }
+    public void PlayerCheatModeActivate()
+    {
+        godMode = true;
+        shootDelay = 0;
+        BulletService.Instance.fireAmmoBool = true;
+    }
+    public void PlayerCheatModeDisabled()
+    {
+        godMode = false;
+        shootDelay = 1;
+        BulletService.Instance.fireAmmoBool = false;
+    }
+
     public void DestroyTank()
     {
+        UIManager.Instance.playerDead = true;
         Particles.Instance.CommenceTankExplosion(transform);
         TankService.Instance.SpawnBustedTank(transform);
-        StartCoroutine(TankExplosionDelay());
+        ServiceEvents.Instance.OnPlayerDeathInVoke();
         gameObject.SetActive(false);
+        TankService.Instance.tanks.Remove(this);
+        PoolService.Destroy(gameObject);
+
     }
+
+    //Coroutines
     IEnumerator ShootBulletDelay(float secs)
     {
         canShoot = false;
@@ -167,11 +196,5 @@ public class TankView : MonoBehaviour, IDamagable
         canShoot = true;
     }
 
-    IEnumerator TankExplosionDelay()
-    {
-        yield return new WaitForSeconds(tankExplosionDelay);
-        TankService.Instance.tanks.Remove(this);
-        ServiceEvents.Instance.OnPlayerDeathInVoke();
-        Destroy(gameObject);
-    }
+
 }

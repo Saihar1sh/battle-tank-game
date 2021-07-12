@@ -12,10 +12,11 @@ public class RapidAmmo : MonoBehaviour
         {
             if (other.gameObject.GetComponent<TankView>() != null)
             {
+                UIManager.Instance.RapidAmmoMode();
                 TankView tankView = other.gameObject.GetComponent<TankView>();
-                if(rapidAmmoBool)
+                if (rapidAmmoBool)
                     StartCoroutine(RapidAmmoTime(tankView, rapidAmmoTime));
-                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                gameObject.SetActive(false);
             }
         }
 

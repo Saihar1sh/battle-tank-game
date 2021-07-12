@@ -8,10 +8,14 @@ public class ServiceEvents : MonoSingletonGeneric<ServiceEvents>
     public event Action OnPlayersDestroyed;
     public event Action OnBulletsFired;
 
-    public int enemiesDied { get; private set; }
+    public int enemiesDied { get; private set; } = 9;
     public int bulletsUsed { get; private set; }
     public int playersDied{ get; private set; }
+    public int rampagesPicked { get; private set; }
+
     public int  bulletsFiredAchievement = 50, enemiesDeadAchievement = 10, playersDeadAchievement = 5;
+
+    private int p = 0, o= 0;
 
     private void Update()
     {
@@ -23,15 +27,16 @@ public class ServiceEvents : MonoSingletonGeneric<ServiceEvents>
             OnEnemiesDestroyed?.Invoke();
             enemiesDeadAchievement += 20;
         }
-        if(playersDied > playersDeadAchievement)
+        else if(playersDied > playersDeadAchievement)
         {
             OnPlayersDestroyed?.Invoke();
             playersDeadAchievement += 10;
         }
-        if(bulletsUsed > bulletsFiredAchievement)
+        else if(bulletsUsed > bulletsFiredAchievement)
         {
             OnBulletsFired?.Invoke();
-            bulletsFiredAchievement += 50;
+            p++;
+            bulletsFiredAchievement += p*50;
         }
     }
     public void OnEnemyDeathInvoke()

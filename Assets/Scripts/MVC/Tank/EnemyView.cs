@@ -3,13 +3,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyView : MonoBehaviour,IDamagable
+public class EnemyView : MonoBehaviour, IDamagable
 {
     //Values--------------------------
-    public float mvtSpeed, rotatingSpeed, maxHealth;
+    public float mvtSpeed, rotatingSpeed, maxHealth = 200;
 
     private float currentHealth;
-    private bool canShoot = true;
+    private bool canShoot;
     //coloring---------------------------------
     public Renderer[] renderers;
 
@@ -31,21 +31,19 @@ public class EnemyView : MonoBehaviour,IDamagable
         meshAgent = GetComponent<NavMeshAgent>();
 
     }
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        //initialing values
         AddDetails();
         currentHealth = maxHealth;
         HealthBar.SetMaxHealth(maxHealth);
-    }
+        canShoot = true;
 
+    }
     // Update is called once per frame
     void Update()
     {
         CheckHealth();
-        //meshAgent.SetDestination(transform.position + transform.forward * 4f);
-        Debug.Log("Enemy Id: "+Id,gameObject);
+        Debug.Log("Enemy Id: " + Id, gameObject);
     }
 
     private void CheckHealth()
@@ -54,11 +52,12 @@ public class EnemyView : MonoBehaviour,IDamagable
             DestroyEnemyTank();
     }
 
+    public Transform GetTransform()
+    {
+        return tankTurret.transform;
+    }
     public void MoveTurret(Transform player)
     {
-        /*        Vector3 turretRotation = new Vector3(player.x, 0, player.y) * rotatingSpeed;
-                tankTurret.rotation = Quaternion.LookRotation(turretRotation);
-        */
         tankTurret.transform.LookAt(player);
     }
     public void Shoot()
@@ -97,10 +96,11 @@ public class EnemyView : MonoBehaviour,IDamagable
         TankService.Instance.IncreamentEnemyDeathCounter();
         TankService.Instance.enemyTanks.Remove(this);
         ServiceEvents.Instance.OnEnemyDeathInvoke();
-        Destroy(gameObject, 2f);
+        PoolService.Destroy(gameObject);
     }
     public void ShootDelay(float secs)
-    {   if(canShoot)
+    {
+        if (canShoot)
             StartCoroutine(ShootBulletDelay(secs));
     }
     IEnumerator ShootBulletDelay(float secs)
