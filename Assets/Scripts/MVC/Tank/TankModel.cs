@@ -10,10 +10,12 @@ public class TankModel
         mvtSpeed = tank.MvtSpeed;
         rotatingSpeed = tank.RotatingSpeed;
         health = tank.Health;
+        reloadTime = tank.BulletReloadTime;
     }
 
-    public TankColor TankColor { get; }
+    public Color TankColor { get; }
     public float mvtSpeed{ get; }
     public float rotatingSpeed { get; }
-    public float health { get; }
+    public int health { get; }
+    public float reloadTime { get; }
 }

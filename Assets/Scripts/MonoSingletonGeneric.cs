@@ -13,7 +13,7 @@ public class MonoSingletonGeneric <T> : MonoBehaviour where T: MonoSingletonGene
         }
         else
         {
-            Debug.LogError("There is another Singleton in the class ");
+            Debug.LogError("There is another Singleton in the class ", instance);
             Destroy(this);
         }
     }
